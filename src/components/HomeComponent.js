@@ -11,7 +11,7 @@ export class HomeComponent extends React.Component {
 
     render() {
         return (
-            <div>
+            <div style={{width: '100%'}}>
                 <div class="center_text">
                     <SearchBarComponent />
                 </div>
