@@ -24,8 +24,9 @@ export class SearchBarComponent extends React.Component {
         return (
             <div>
                 <div style={{clear: 'both'}}><h2>{this.state.guesses[index][0] + " " + this.state.guesses[index][1]}</h2></div>
-                <table cellSpacing='5px' style={{margin: '0 auto', width: '80%'}}>
+                <table cellSpacing='5px' style={{margin: '0 auto', width: window.innerWidth < 450 ? '95%' : '80%'}}>
                     {this.state.guesses[index].splice(2, 10).map((attr, index1) => {
+                        console.log(attr);
                         return (
                         <div class={index1 < 2 ? "first2" : index < 4 ? "second2" : "third2"}>
                             {attr}

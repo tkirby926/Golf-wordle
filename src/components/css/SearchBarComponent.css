@@ -76,6 +76,8 @@
     display: table-cell;
     width: 10%;
     padding: 2%;
+    font-family: 'Brush Script MT';
+    font-size: 3vw;
 }
 
 .second2 {
@@ -86,6 +88,8 @@
     display: table-cell;
     width: 10%;
     padding: 2%;
+    font-family: 'Brush Script MT';
+    font-size: 3vw;
 }
 
 .last2 {
@@ -96,4 +100,6 @@
     display: table-cell;
     width: 10%;
     padding: 2%;
+    font-family: 'Brush Script MT';
+    font-size: 3vw;
 }
