@@ -8,7 +8,8 @@ export class SearchBarComponent extends React.Component {
         this.state = {
             guess_val: "",
             num_guesses: 0,
-            guesses: [['Jon', 'Rahm', 4, 3, 'UCLA', 'Spain', '2008', '33']]
+            guesses: [['Jon', 'Rahm', 4, 3, 'UCLA', 'Spain', '2008', '33'], ['Jon', 'Rahm', 4, 3, 'UCLA', 'Spain', '2008', '33'], ['Jon', 'Rahm', 4, 3, 'UCLA', 'Spain', '2008', '33'], ['Jon', 'Rahm', 4, 3, 'UCLA', 'Spain', '2008', '33'],
+            ['Jon', 'Rahm', 4, 3, 'UCLA', 'Spain', '2008', '33'], ['Jon', 'Rahm', 4, 3, 'UCLA', 'Spain', '2008', '33'], ['Jon', 'Rahm', 4, 3, 'UCLA', 'Spain', '2008', '33'], ['Jon', 'Rahm', 4, 3, 'UCLA', 'Spain', '2008', '33']]
         }
     }
 
@@ -22,7 +23,7 @@ export class SearchBarComponent extends React.Component {
     returnGuess(index) {
         return (
             <div>
-                <div style={{clear: 'both'}}>{this.state.guesses[index][0] + " " + this.state.guesses[index][1]}</div>
+                <div style={{clear: 'both'}}><h2>{this.state.guesses[index][0] + " " + this.state.guesses[index][1]}</h2></div>
                 <table cellSpacing='5px' style={{margin: '0 auto', width: '80%'}}>
                     {this.state.guesses[index].splice(2, 10).map((attr, index1) => {
                         return (
