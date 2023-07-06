@@ -8,7 +8,7 @@ export class SearchBarComponent extends React.Component {
         this.state = {
             guess_val: "",
             num_guesses: 0,
-            guesses: []
+            guesses: [['Jon', 'Rahm', 4, 3, 'UCLA', 'Spain', '2008', '33']]
         }
     }
 
@@ -24,9 +24,9 @@ export class SearchBarComponent extends React.Component {
             <div>
                 <div style={{clear: 'both'}}>{this.state.guesses[index][0] + " " + this.state.guesses[index][1]}</div>
                 <div style={{display: 'table'}}>
-                    {this.state.guesses[index].splice(2, 10).map((time, index1) => {
-                        <div class={index1 < 2 ? "first2" : index < 4 ? "second2" : index < 6 ? "third2" : "last2"}>
-
+                    {this.state.guesses[index].splice(2, 10).map((attr, index1) => {
+                        <div class={index1 < 2 ? "first2" : index < 4 ? "second2" : "third2"}>
+                            {attr}
                         </div>
                     })}
                 </div>
@@ -34,44 +34,42 @@ export class SearchBarComponent extends React.Component {
         )
     }
 
-    checkKey(e) {
+    acceptGuess(e) {
         e.preventDefault();
-        if (e.which == 13) {
-            this.setState({num_guesses: this.state.num_guesses + 1})
-        }
+        this.setState({num_guesses: this.state.num_guesses + 1})
     }
 
     render() {
         return (
             <div>
             <div class="box">
-                <form name="search">
-                    <input type="text" style={{caretColor: 'transparent'}} onKeyUp={(e) => this.checkKey(e)} placeholder="Guess Here" id='search' class="input" name="txt" onKeyUp={(e)=>this.checkAns(e)} />
+                <form name="search" onSubmit = {(e) => this.acceptGuess(e)}>
+                    <input type="text" style={{caretColor: 'transparent'}}  placeholder="Guess Here" id='search' class="input" name="txt" onKeyUp={(e)=>this.checkAns(e)} />
                 </form>
             </div>
             <div>
-                {this.state.guesses.length > 0 && this.returnGuess(0)}
+                {this.state.num_guesses > 0 && this.returnGuess(0)}
             </div>
             <div>
-                {this.state.guesses.length > 1 && this.returnGuess(1)}
+                {this.state.num_guesses > 1 && this.returnGuess(1)}
             </div>
             <div>
-                {this.state.guesses.length > 2 && this.returnGuess(2)}
+                {this.state.num_guesses > 2 && this.returnGuess(2)}
             </div>
             <div>
-                {this.state.guesses.length > 3 && this.returnGuess(3)}
+                {this.state.num_guesses > 3 && this.returnGuess(3)}
             </div>
             <div>
-                {this.state.guesses.length > 4 && this.returnGuess(4)}
+                {this.state.num_guesses > 4 && this.returnGuess(4)}
             </div>
             <div>
-                {this.state.guesses.length > 5 && this.returnGuess(5)}
+                {this.state.num_guesses > 5 && this.returnGuess(5)}
             </div>
             <div>
-                {this.state.guesses.length > 6 && this.returnGuess(6)}
+                {this.state.num_guesses > 6 && this.returnGuess(6)}
             </div>
             <div>
-                {this.state.guesses.length > 7 && this.returnGuess(7)}
+                {this.state.num_guesses > 7 && this.returnGuess(7)}
             </div>
             </div>
         )

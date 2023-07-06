@@ -72,22 +72,22 @@
     border-radius: 50%;
     background-color: white;
     display: table-cell;
+    width: 10%;
+    padding: 2%;
 }
 
 .second2 {
     border-radius: 50%;
     background-color: white;
     display: table-cell;
-}
-
-.third2 {
-    border-radius: 50%;
-    background-color: white;
-    display: table-cell;
+    width: 10%;
+    padding: 2%;
 }
 
 .last2 {
     border-radius: 50%;
     background-color: white;
     display: table-cell;
+    width: 10%;
+    padding: 2%;
 }
