@@ -11,8 +11,7 @@ export class SearchBarComponent extends React.Component {
         this.state = {
             guess_val: "",
             num_guesses: 0,
-            guesses: [['Jon', 'Rahm', 4, 3, 'UCLA', 'Spain', '2008', '33'], ['Jon', 'Rahm', 4, 8, 'UCLA', 'Spain', '2008', '33'], ['Jon', 'Rahm', 4, 3, 'UCLA', 'Spain', '2008', '33'], ['Jon', 'Rahm', 4, 3, 'UCLA', 'Spain', '2008', '33'],
-            ['Jon', 'Rahm', 4, 3, 'UCLA', 'Spain', '2008', '33'], ['Jon', 'Rahm', 4, 3, 'UCLA', 'Spain', '2008', '33'], ['Jon', 'Rahm', 4, 3, 'UCLA', 'Spain', '2008', '33'], ['Jon', 'Rahm', 4, 3, 'UCLA', 'Spain', '2008', '33']],
+            guesses: [],
             hide_popup: true,
             hide_login_popup: true,
             hide_create_popup: true,
@@ -57,14 +56,49 @@ export class SearchBarComponent extends React.Component {
             <div class="big_form">
                 <div style={{clear: 'both'}}><h2 style={{fontFamily: 'Copperplate', fontSize: window.innerWidth < 450 ? '30px' : '40px'}}>{this.state.guesses[index][1] + " " + this.state.guesses[index][2]}</h2></div>
                 <table cellSpacing='5px' style={{margin: '0 auto', width: window.innerWidth < 450 ? '95%' : '80%'}}>
-                    {this.state.guesses[index].slice(3, 10).map((attr, index1) => {
-                        var type;
-                        if (index1 < 6) type = "third2";
-                        if (index1 < 4) type = "second2";
-                        if (index1 < 2) type = "first2";
+                    {this.state.guesses[index].slice(3, 9).map((attr, index1) => {
+                        var type = '';
+                        var arrow = '';
+                        if (index1 == 4 || index1 == 5) { 
+                            if (this.state.guesses[index][index1 + 10] != 's') {
+                                type = "third2";
+                            }
+                            else {
+                                type = "third2_cor";
+                            }
+                        }
+                        else if (index1 == 2 || index1 == 3) { 
+                            if (this.state.guesses[index][index1 + 10] == 'u') {
+                                arrow = <div>&#8593;</div>;
+                                type = "second2"; 
+                            }
+                            else if (this.state.guesses[index][index1 + 10] == 'd') {
+                                arrow = <div>&#8595;</div>;
+                                type = "second2"; 
+                            }
+                            else {
+                                type = "second2_cor";
+                            }
+                        }
+                        else {
+                            if (this.state.guesses[index][index1 + 10] == 'u') {
+                                arrow = <div>&#8593;</div>;
+                                type = "third2"; 
+                            }
+                            else if (this.state.guesses[index][index1 + 10] == 'd') {
+                                arrow = <div>&#8595;</div>;
+                                type = "third2"; 
+                            }
+                            else {
+                                type = "third2_cor";
+                            }
+                        }
+                        
                         return (
-                        <div class={type}>
-                            {attr}
+                        <div class={type}  style={{lineHeight: '20px'}}>
+                            {attr}<br></br>
+                            {this.state.guesses[index1 + 10] == 'w'}
+                            <div style={{fontSize: '20px'}}>{arrow}</div>
                         </div>
                         )
                     })}
@@ -119,7 +153,7 @@ export class SearchBarComponent extends React.Component {
         .then(response => response.json())
         .then((data) => {
             if (data.error === "") {
-                this.setState({user: e.target[0].value})
+                this.setState({user: e.target[0].value, hide_login_popup: true})
             }
             else {
                 this.setState({error: data.error})
@@ -145,7 +179,7 @@ export class SearchBarComponent extends React.Component {
         .then(response => response.json())
         .then((data) => {
             if (data.success == 'yes') {
-                this.setState({user: e.target[1].value})
+                this.setState({user: e.target[1].value, hide_create_popup: true})
             }
         });
     }
@@ -158,7 +192,7 @@ export class SearchBarComponent extends React.Component {
         return (
             <div style={{width: '100%', position: 'relative'}}>
             <div class="box">
-                <p>{this.state.user}</p>
+                <p class="big_form_white">{this.state.user}</p>
                 <form name="search">
                     <input disabled={this.state.num_guesses >= 8} type="text" style={{caretColor: 'transparent'}}  placeholder="Guess Here" id='search' class="input" name="txt" onKeyUp={(e) => this.autoComp(e)} />
                     <div>{this.state.autocomp_results.slice(0, 5).map((result, index) => {
