@@ -2,6 +2,7 @@ import './css/SearchBarComponent.css';
 import React from 'react';
 import UserProfile from './Userprofile';
 import Scheffle from './Scheffle_logo.jpeg';
+import { json } from 'react-router';
 
 export class SearchBarComponent extends React.Component {
 
@@ -14,9 +15,11 @@ export class SearchBarComponent extends React.Component {
             ['Jon', 'Rahm', 4, 3, 'UCLA', 'Spain', '2008', '33'], ['Jon', 'Rahm', 4, 3, 'UCLA', 'Spain', '2008', '33'], ['Jon', 'Rahm', 4, 3, 'UCLA', 'Spain', '2008', '33'], ['Jon', 'Rahm', 4, 3, 'UCLA', 'Spain', '2008', '33']],
             hide_popup: true,
             hide_login_popup: true,
+            hide_create_popup: true,
             user: '',
             autocomp_results: [],
-            win: false
+            win: false,
+            error: ''
         }
     }
 
@@ -45,7 +48,7 @@ export class SearchBarComponent extends React.Component {
             if (data.user == 'null') {
                 hide_popup = false;
             }
-            this.setState({guesses: data.guesses, user: data.user, hide_login_popup: hide_popup, num_guesses: data.guesses.length})
+            this.setState({guesses: data.guesses, user: data.user == "null" ? '' : data.user, hide_login_popup: hide_popup, num_guesses: data.guesses.length})
         })
     }
 
@@ -78,7 +81,6 @@ export class SearchBarComponent extends React.Component {
     acceptGuess(e, guessid) {
         e.preventDefault();
         var new_guesses = this.state.num_guesses + 1;
-        this.setState({num_guesses: new_guesses})
         fetch(UserProfile.getUrl() + "/api/v1/check_guess/" + guessid, { credentials: 'include', method: 'GET' })
         .then((response) => {
             if (!response.ok) throw Error(response.statusText);
@@ -86,8 +88,9 @@ export class SearchBarComponent extends React.Component {
         })
         .then((data) => {
             var x = this.state.guesses;
-            x.push(data.guess_data)
-            this.setState({guesses: x, win: data.success})
+            x.push(data.guess_data.slice(-9))
+            document.getElementById('search').value = '';
+            this.setState({guesses: x, win: data.success, num_guesses: new_guesses, autocomp_results: []})
         })
         if (new_guesses == 8) {
             this.setState({hide_popup: false})
@@ -100,16 +103,62 @@ export class SearchBarComponent extends React.Component {
         this.setState({hide_login_popup: true})
     }
 
+    showCreateProfileWindow(e) {
+        e.preventDefault();
+        this.setState({hide_login_popup: true, hide_create_popup: false});
+    }
+
+    closeCreatePopup(e) {
+        e.preventDefault();
+        this.setState({hide_create_popup: true})
+    }
+
+    submitLogin(e) {
+        e.preventDefault();
+        fetch(UserProfile.getUrl() + '/login/' + e.target[1].value + '/' + e.target[2].value, { credentials: 'include', method: 'GET' })
+        .then(response => response.json())
+        .then((data) => {
+            if (data.error === "") {
+                this.setState({user: e.target[0].value})
+            }
+            else {
+                this.setState({error: data.error})
+            }
+        });
+    }
+
+    submitCreate(e) {
+        e.preventDefault();
+        if (e.target[2].value != e.target[3].value) {
+            this.setState({error: "Passwords do not match. Please try again."})
+            return;
+        }
+        var formdata = new FormData();
+        formdata.append("username", e.target[1].value);
+        formdata.append("password", e.target[2].value);
+        var requestOptions = {
+            method: 'POST',
+            body: formdata
+        };
+
+        fetch(UserProfile.getUrl() + "/api/v1/create", requestOptions)
+        .then(response => response.json())
+        .then((data) => {
+            if (data.success == 'yes') {
+                this.setState({user: e.target[1].value})
+            }
+        });
+    }
+
     render() {
         var im_wid = '15%';
-        var font_size = '18px';
         if (window.innerWidth < 750) {
             im_wid = '30%';
-            font_size = '14px';
         }
         return (
             <div style={{width: '100%', position: 'relative'}}>
             <div class="box">
+                <p>{this.state.user}</p>
                 <form name="search">
                     <input disabled={this.state.num_guesses >= 8} type="text" style={{caretColor: 'transparent'}}  placeholder="Guess Here" id='search' class="input" name="txt" onKeyUp={(e) => this.autoComp(e)} />
                     <div>{this.state.autocomp_results.slice(0, 5).map((result, index) => {
@@ -150,10 +199,22 @@ export class SearchBarComponent extends React.Component {
             <div>
                 {this.state.num_guesses > 0 && this.returnGuess(0)}
             </div>
-            <div class="popup" hidden={this.state.hide_login_popup}>
+            <form class="popup" hidden={this.state.hide_login_popup} onSubmit={(e) => this.submitLogin(e)}>
                 <button style={{float: 'right'}} onClick={(e) => this.closeLoginPopup(e)}>X</button>
-                Sorry bitch you lose
-            </div>
+                <p style={{fontWeight: 'bold'}}>Log in to your account to track your progress, or create an account using the link below</p>
+                <p style={{display: 'inline'}}>Username:</p> <input type='text' style={{display: 'inline'}}></input><br></br>
+                <p style={{display: 'inline'}}>Password:</p> <input type='password' style={{display: 'inline'}}></input><br></br><br></br>
+                <button type='submit'>Submit</button><br></br>
+                <button onClick={(e) => this.showCreateProfileWindow(e)}>Create Profile</button>
+            </form>
+            <form class="popup" hidden={this.state.hide_create_popup} onSubmit={(e) => this.submitCreate(e)}>
+                <button style={{float: 'right'}} onClick={(e) => this.closeCreatePopup(e)}>X</button>
+                <p style={{fontWeight: 'bold'}}>Create Profile</p>
+                <p style={{display: 'inline'}}>Username:</p> <input type='text' style={{display: 'inline'}}></input><br></br>
+                <p style={{display: 'inline'}}>Password:</p> <input type='password' style={{display: 'inline'}}></input><br></br>
+                <p style={{display: 'inline'}}>Confirm Password:</p> <input type='password' style={{display: 'inline'}}></input><br></br><br></br>
+                <button type='submit'>Submit</button><br></br>
+            </form>
             <div class="popup" hidden={this.state.hide_popup}>
                 <button style={{float: 'right'}} onClick={(e) => this.closePopup(e)}>X</button>
                 Sorry bitch you lose
