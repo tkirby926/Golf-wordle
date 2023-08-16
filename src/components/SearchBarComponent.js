@@ -18,7 +18,9 @@ export class SearchBarComponent extends React.Component {
             user: '',
             autocomp_results: [],
             win: false,
-            error: ''
+            error: '',
+            answer: [],
+            hide_winning_popup: true
         }
     }
 
@@ -122,8 +124,11 @@ export class SearchBarComponent extends React.Component {
         })
         .then((data) => {
             var x = this.state.guesses;
-            x.push(data.guess_data.slice(-9))
+            x.push(data.guess_data)
             document.getElementById('search').value = '';
+            if (data.guess_data[9] == 's') {
+                this.setState({win: true, answer: data.guess_data.slice(0, 9), hide_winning_popup: false})
+            }
             this.setState({guesses: x, win: data.success, num_guesses: new_guesses, autocomp_results: []})
         })
         if (new_guesses == 8) {
@@ -145,6 +150,11 @@ export class SearchBarComponent extends React.Component {
     closeCreatePopup(e) {
         e.preventDefault();
         this.setState({hide_create_popup: true})
+    }
+
+    closeWinningPopup(e) {
+        e.preventDefault();
+        this.setState({hide_winning_popup: true})
     }
 
     submitLogin(e) {
@@ -184,6 +194,20 @@ export class SearchBarComponent extends React.Component {
         });
     }
 
+    logOut(e) {
+        e.preventDefault();
+        fetch(UserProfile.getUrl() + '/logout', { credentials: 'include', method: 'GET' })
+        .then(response => response.json())
+        .then((data) => {
+            if (data.error === "") {
+                this.setState({user: ''})
+            }
+            else {
+                this.setState({error: data.error})
+            }
+        });
+    }
+
     render() {
         var im_wid = '15%';
         if (window.innerWidth < 750) {
@@ -192,7 +216,11 @@ export class SearchBarComponent extends React.Component {
         return (
             <div style={{width: '100%', position: 'relative'}}>
             <div class="box">
-                <p class="big_form_white">{this.state.user}</p>
+                <div class="big_form_white" hidden={this.state.user == ''}>
+                    <p style={{lineHeight: '1px'}}>{this.state.user}</p>
+                    <p style={{lineHeight: '1px', fontSize: '10px', fontWeight: 'normal', cursor: 'pointer', color: 'blue', textDecoration: 'underline'}}
+                     onClick={(e) => this.logOut(e)}>Log out</p>
+                </div> 
                 <form name="search">
                     <input disabled={this.state.num_guesses >= 8} type="text" style={{caretColor: 'transparent'}}  placeholder="Guess Here" id='search' class="input" name="txt" onKeyUp={(e) => this.autoComp(e)} />
                     <div>{this.state.autocomp_results.slice(0, 5).map((result, index) => {
@@ -248,6 +276,12 @@ export class SearchBarComponent extends React.Component {
                 <p style={{display: 'inline'}}>Password:</p> <input type='password' style={{display: 'inline'}}></input><br></br>
                 <p style={{display: 'inline'}}>Confirm Password:</p> <input type='password' style={{display: 'inline'}}></input><br></br><br></br>
                 <button type='submit'>Submit</button><br></br>
+            </form>
+            <form class="popup" hidden={this.state.hide_winning_popup}>
+                <button style={{float: 'right'}} onClick={(e) => this.closeWinningPopup(e)}>X</button>
+                <p>Congrats for getting today's golfer, {this.state.answer[1]} {this.state.answer[2]}</p>
+                
+                
             </form>
             <div class="popup" hidden={this.state.hide_popup}>
                 <button style={{float: 'right'}} onClick={(e) => this.closePopup(e)}>X</button>
