@@ -168,11 +168,11 @@ export class SearchBarComponent extends React.Component {
         fetch(UserProfile.getUrl() + '/login/' + e.target[1].value + '/' + e.target[2].value, { credentials: 'include', method: 'GET' })
         .then(response => response.json())
         .then((data) => {
-            if (data.error === "") {
-                this.setState({user: e.target[0].value, hide_login_popup: true})
+            if (data.correct_login) {
+                this.setState({user: data.user, hide_login_popup: true})
             }
             else {
-                this.setState({error: data.error})
+                this.setState({error: "Login Failed"})
             }
         });
     }
@@ -202,11 +202,12 @@ export class SearchBarComponent extends React.Component {
 
     logOut(e) {
         e.preventDefault();
-        fetch(UserProfile.getUrl() + '/logout', { credentials: 'include', method: 'GET' })
+        fetch(UserProfile.getUrl() + '/api/v1/logout', { credentials: 'include', method: 'DELETE' })
         .then(response => response.json())
         .then((data) => {
-            if (data.error === "") {
-                this.setState({user: ''})
+            if (data.user === "") {
+                this.setState({user: '', guesses: [], num_guesses: 0, hide_login_popup: false})
+                this.forceUpdate();
             }
             else {
                 this.setState({error: data.error})
