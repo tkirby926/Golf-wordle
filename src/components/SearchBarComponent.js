@@ -3,6 +3,8 @@ import React from 'react';
 import UserProfile from './Userprofile';
 import Scheffle from './Scheffle_logo.jpeg';
 import { json } from 'react-router';
+import { toHaveAccessibleDescription } from '@testing-library/jest-dom/matchers';
+import CanvasJSReact from '@canvasjs/react-charts';
 
 export class SearchBarComponent extends React.Component {
 
@@ -21,7 +23,9 @@ export class SearchBarComponent extends React.Component {
             error: '',
             answer: [],
             hide_winning_popup: true,
-            cant_guess: false
+            cant_guess: false,
+            history: [],
+            hide_dropdown: true
         }
     }
 
@@ -143,6 +147,11 @@ export class SearchBarComponent extends React.Component {
         })
     }
 
+    logIn(e) {
+        e.preventDefault();
+        this.setState({hide_login_popup: false})
+    }
+
     closeLoginPopup(e) {
         e.preventDefault();
         this.setState({hide_login_popup: true})
@@ -169,7 +178,8 @@ export class SearchBarComponent extends React.Component {
         .then(response => response.json())
         .then((data) => {
             if (data.correct_login) {
-                this.setState({user: data.user, hide_login_popup: true})
+                this.setState({user: data.user, hide_login_popup: true, error: ''})
+                window.location.reload();
             }
             else {
                 this.setState({error: "Login Failed"})
@@ -188,7 +198,8 @@ export class SearchBarComponent extends React.Component {
         formdata.append("password", e.target[2].value);
         var requestOptions = {
             method: 'POST',
-            body: formdata
+            body: formdata,
+            credentials: 'include'
         };
 
         fetch(UserProfile.getUrl() + "/api/v1/create", requestOptions)
@@ -196,6 +207,7 @@ export class SearchBarComponent extends React.Component {
         .then((data) => {
             if (data.success == 'yes') {
                 this.setState({user: e.target[1].value, hide_create_popup: true})
+                window.location.reload();
             }
         });
     }
@@ -214,6 +226,53 @@ export class SearchBarComponent extends React.Component {
             }
         });
     }
+    
+    showDropDown() {
+        this.setState({hide_dropdown: !this.state.hide_dropdown})
+    }
+
+    showHistory() {
+        var CanvasJS = CanvasJSReact.CanvasJS;
+        var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+        const options = {
+			animationEnabled: true,
+			theme: "light2",
+			title:{
+				text: "Guess History"
+			},
+			axisX: {
+				title: "Social Network",
+				reversed: true,
+			},
+			axisY: {
+				title: "Monthly Active Users",
+				includeZero: true,
+				labelFormatter: this.addSymbols
+			},
+			data: [{
+				type: "bar",
+				dataPoints: [
+					{ y:  2200000000, label: "1" },
+					{ y:  1800000000, label: "2" },
+					{ y:  800000000, label: "3" },
+					{ y:  563000000, label: "4" },
+					{ y:  376000000, label: "5" },
+					{ y:  336000000, label: "6" },
+					{ y:  330000000, label: "7" },
+                    { y:  330000000, label: "8" },
+                    { y:  330000000, label: "Incorrect" }
+				]
+			}]
+		}
+		return (
+		<div>
+			<CanvasJSChart options = {options}
+				/* onRef={ref => this.chart = ref} */
+			/>
+			{/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
+		</div>
+        )
+    }
 
     render() {
         var im_wid = '15%';
@@ -222,77 +281,94 @@ export class SearchBarComponent extends React.Component {
         }
         return (
             <div style={{width: '100%', position: 'relative'}}>
-            <div class="box">
-                <div class="big_form_white" hidden={this.state.user == ''}>
-                    <p style={{lineHeight: '1px'}}>{this.state.user}</p>
-                    <p style={{lineHeight: '1px', fontSize: '10px', fontWeight: 'normal', cursor: 'pointer', color: 'blue', textDecoration: 'underline'}}
-                     onClick={(e) => this.logOut(e)}>Log out</p>
-                </div> 
-                <form name="search">
-                    <input disabled={this.state.num_guesses >= 8} type="text" style={{caretColor: 'transparent'}} disabled={this.state.cant_guess}  placeholder={this.state.cant_guess ? "Thanks for Playing" : "Guess Here"} id='search' class="input" name="txt" onKeyUp={(e) => this.autoComp(e)} />
-                    <div>{this.state.autocomp_results.slice(0, 5).map((result, index) => {
-                            return (
-                            <tr class="user_button" onClick = {(e) => this.acceptGuess(e, result[0])}>
-                                <td style={{width: im_wid}}>
-                                    <img src={Scheffle} style={{height: '35px', display: 'table-cell', borderRadius: '50%', border: 'thin solid white'}}></img>
-                                </td>
-                                <td style={{display: 'table-cell', verticalAlign: 'middle'}}>
-                                    <span style={{width: '80%', fontWeight: 'bold'}}>{result[1]} {result[2]}</span>
-                                </td>
-                            </tr>
-                            )
-                    })}</div>
+                <div hidden={this.state.user == ''} style={{float: 'right', marginRight: '5%', width: '25%', marginTop: '5px', marginBottom: '5px'}}>
+                    <div style={{display: 'block'}}>
+                        <button class="button_head" style={{fontSize: '15px', width: '14vw', marginTop: '1vh'}} onClick={(event) => this.showDropDown(event)}> Tools </button>
+                        <div style={{position: 'absolute', overflow: 'visible !important'}} hidden={this.state.hide_dropdown}>
+                            gfdgfdsgfds
+                        </div>
+                    </div>
+                </div>
+                <div style={{clear: 'both'}}>
+                    <img src={Scheffle} style={{height: '12vh', maxWidth: '85vw', marginBottom: '2vh'}}></img>
+                </div>
+                <div class="box">
+                    <div class="big_form_white" hidden={this.state.user == ''}>
+                        <p style={{lineHeight: '1px'}}>{this.state.user}</p>
+                        <p style={{lineHeight: '1px', fontSize: '10px', fontWeight: 'normal', cursor: 'pointer', color: 'blue', textDecoration: 'underline'}}
+                        onClick={(e) => this.logOut(e)}>Log out</p>
+                    </div>
+                    <div class="big_form_white" hidden={this.state.user != ''}>
+                        <p style={{lineHeight: '1px', cursor: 'pointer'}}
+                        onClick={(e) => this.logIn(e)}>Log in</p>
+                    </div>  
+                    <form name="search">
+                        <input disabled={this.state.num_guesses >= 8} type="text" style={{caretColor: 'transparent'}} disabled={this.state.cant_guess}  placeholder={this.state.cant_guess ? "Thanks for Playing" : "Guess Here"} id='search' class="input" name="txt" onKeyUp={(e) => this.autoComp(e)} />
+                        <div>{this.state.autocomp_results.slice(0, 5).map((result, index) => {
+                                return (
+                                <tr class="user_button" onClick = {(e) => this.acceptGuess(e, result[0])}>
+                                    <td style={{width: im_wid}}>
+                                        <img src={Scheffle} style={{height: '35px', display: 'table-cell', borderRadius: '50%', border: 'thin solid white'}}></img>
+                                    </td>
+                                    <td style={{display: 'table-cell', verticalAlign: 'middle'}}>
+                                        <span style={{width: '80%', fontWeight: 'bold'}}>{result[1]} {result[2]}</span>
+                                    </td>
+                                </tr>
+                                )
+                        })}</div>
+                    </form>
+                </div>
+                <div>
+                    {this.state.num_guesses > 7 && this.returnGuess(7)}
+                </div>
+                <div>
+                    {this.state.num_guesses > 6 && this.returnGuess(6)}
+                </div>
+                <div>
+                    {this.state.num_guesses > 5 && this.returnGuess(5)}
+                </div>
+                <div>
+                    {this.state.num_guesses > 4 && this.returnGuess(4)}
+                </div>
+                <div>
+                    {this.state.num_guesses > 3 && this.returnGuess(3)}
+                </div>
+                <div>
+                    {this.state.num_guesses > 2 && this.returnGuess(2)}
+                </div>
+                <div>
+                    {this.state.num_guesses > 1 && this.returnGuess(1)}
+                </div>
+                <div>
+                    {this.state.num_guesses > 0 && this.returnGuess(0)}
+                </div>
+                <form class="popup" hidden={this.state.hide_login_popup} onSubmit={(e) => this.submitLogin(e)}>
+                    <button style={{float: 'right'}} onClick={(e) => this.closeLoginPopup(e)}>X</button>
+                    <p style={{fontWeight: 'bold'}}>Log in to your account to track your progress, or create an account using the link below</p>
+                    <p style={{display: 'inline'}}>Username:</p> <input type='text' style={{display: 'inline'}}></input><br></br>
+                    <p style={{display: 'inline'}}>Password:</p> <input type='password' style={{display: 'inline'}}></input><br></br><br></br>
+                    <button type='submit'>Submit</button><br></br>
+                    <button onClick={(e) => this.showCreateProfileWindow(e)}>Create Profile</button>
+                    <p style={{color: 'red'}}>{this.state.error}</p>
                 </form>
-            </div>
-            <div>
-                {this.state.num_guesses > 7 && this.returnGuess(7)}
-            </div>
-            <div>
-                {this.state.num_guesses > 6 && this.returnGuess(6)}
-            </div>
-            <div>
-                {this.state.num_guesses > 5 && this.returnGuess(5)}
-            </div>
-            <div>
-                {this.state.num_guesses > 4 && this.returnGuess(4)}
-            </div>
-            <div>
-                {this.state.num_guesses > 3 && this.returnGuess(3)}
-            </div>
-            <div>
-                {this.state.num_guesses > 2 && this.returnGuess(2)}
-            </div>
-            <div>
-                {this.state.num_guesses > 1 && this.returnGuess(1)}
-            </div>
-            <div>
-                {this.state.num_guesses > 0 && this.returnGuess(0)}
-            </div>
-            <form class="popup" hidden={this.state.hide_login_popup} onSubmit={(e) => this.submitLogin(e)}>
-                <button style={{float: 'right'}} onClick={(e) => this.closeLoginPopup(e)}>X</button>
-                <p style={{fontWeight: 'bold'}}>Log in to your account to track your progress, or create an account using the link below</p>
-                <p style={{display: 'inline'}}>Username:</p> <input type='text' style={{display: 'inline'}}></input><br></br>
-                <p style={{display: 'inline'}}>Password:</p> <input type='password' style={{display: 'inline'}}></input><br></br><br></br>
-                <button type='submit'>Submit</button><br></br>
-                <button onClick={(e) => this.showCreateProfileWindow(e)}>Create Profile</button>
-            </form>
-            <form class="popup" hidden={this.state.hide_create_popup} onSubmit={(e) => this.submitCreate(e)}>
-                <button style={{float: 'right'}} onClick={(e) => this.closeCreatePopup(e)}>X</button>
-                <p style={{fontWeight: 'bold'}}>Create Profile</p>
-                <p style={{display: 'inline'}}>Username:</p> <input type='text' style={{display: 'inline'}}></input><br></br>
-                <p style={{display: 'inline'}}>Password:</p> <input type='password' style={{display: 'inline'}}></input><br></br>
-                <p style={{display: 'inline'}}>Confirm Password:</p> <input type='password' style={{display: 'inline'}}></input><br></br><br></br>
-                <button type='submit'>Submit</button><br></br>
-            </form>
-            <form class="popup" hidden={this.state.hide_winning_popup}>
-                <button style={{float: 'right'}} onClick={(e) => this.closeWinningPopup(e)}>X</button>
-                <p>Congrats for getting today's golfer, {this.state.answer[1]} {this.state.answer[2]}</p>
-                {!this.state.hide_winning_popup && this.returnGuess(this.state.num_guesses - 1)}   
-            </form>
-            <div class="popup" hidden={this.state.hide_popup}>
-                <button style={{float: 'right'}} onClick={(e) => this.closePopup(e)}>X</button>
-                Sorry bitch you lose
-            </div>
+                <form class="popup" hidden={this.state.hide_create_popup} onSubmit={(e) => this.submitCreate(e)}>
+                    <button style={{float: 'right'}} onClick={(e) => this.closeCreatePopup(e)}>X</button>
+                    <p style={{fontWeight: 'bold'}}>Create Profile</p>
+                    <p style={{display: 'inline'}}>Username:</p> <input type='text' style={{display: 'inline'}}></input><br></br>
+                    <p style={{display: 'inline'}}>Password:</p> <input type='password' style={{display: 'inline'}}></input><br></br>
+                    <p style={{display: 'inline'}}>Confirm Password:</p> <input type='password' style={{display: 'inline'}}></input><br></br><br></br>
+                    <button type='submit'>Submit</button><br></br>
+                </form>
+                <form class="popup" hidden={this.state.hide_winning_popup}>
+                    <button style={{float: 'right'}} onClick={(e) => this.closeWinningPopup(e)}>X</button>
+                    <p>Congrats for getting today's golfer, {this.state.answer[1]} {this.state.answer[2]}</p>
+                    {!this.state.hide_winning_popup && this.returnGuess(this.state.num_guesses - 1)}
+                    {!this.state.hide_winning_popup && this.showHistory()}   
+                </form>
+                <div class="popup" hidden={this.state.hide_popup}>
+                    <button style={{float: 'right'}} onClick={(e) => this.closePopup(e)}>X</button>
+                    Sorry bitch you lose
+                </div>
             </div>   
         )
     }
