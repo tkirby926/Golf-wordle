@@ -58,7 +58,7 @@ export class SearchBarComponent extends React.Component {
             if (data.no_guesses) {
                 cant_guess = true;
             }
-            this.setState({cant_guess: cant_guess, guesses: data.guesses, user: data.user == "null" ? '' : data.user, hide_login_popup: hide_popup, num_guesses: data.guesses.length})
+            this.setState({cant_guess: cant_guess, guesses: data.guesses, history: data.history, user: data.user == "null" ? '' : data.user, hide_login_popup: hide_popup, num_guesses: data.guesses.length})
         })
     }
 
@@ -232,6 +232,9 @@ export class SearchBarComponent extends React.Component {
     }
 
     showHistory() {
+        if (this.state.user == '') {
+            return "";
+        }
         var CanvasJS = CanvasJSReact.CanvasJS;
         var CanvasJSChart = CanvasJSReact.CanvasJSChart;
         const options = {
@@ -241,26 +244,27 @@ export class SearchBarComponent extends React.Component {
 				text: "Guess History"
 			},
 			axisX: {
-				title: "Social Network",
+				title: "Guesses",
 				reversed: true,
 			},
 			axisY: {
-				title: "Monthly Active Users",
+				title: "Frequency",
+                interval: 1,
 				includeZero: true,
 				labelFormatter: this.addSymbols
 			},
 			data: [{
 				type: "bar",
 				dataPoints: [
-					{ y:  2200000000, label: "1" },
-					{ y:  1800000000, label: "2" },
-					{ y:  800000000, label: "3" },
-					{ y:  563000000, label: "4" },
-					{ y:  376000000, label: "5" },
-					{ y:  336000000, label: "6" },
-					{ y:  330000000, label: "7" },
-                    { y:  330000000, label: "8" },
-                    { y:  330000000, label: "Incorrect" }
+					{ y:  this.state.history[0], label: "1" },
+					{ y:  this.state.history[1], label: "2" },
+					{ y:  this.state.history[2], label: "3" },
+					{ y:  this.state.history[3], label: "4" },
+					{ y:  this.state.history[4], label: "5" },
+					{ y:  this.state.history[5], label: "6" },
+					{ y:  this.state.history[6], label: "7" },
+                    { y:  this.state.history[7], label: "8" },
+                    { y:  this.state.history[8], label: "Incorrect" }
 				]
 			}]
 		}
@@ -281,14 +285,14 @@ export class SearchBarComponent extends React.Component {
         }
         return (
             <div style={{width: '100%', position: 'relative'}}>
-                <div hidden={this.state.user == ''} style={{float: 'right', marginRight: '5%', width: '25%', marginTop: '5px', marginBottom: '5px'}}>
+                <div hidden={this.state.user == ''} style={{ marginRight: '5%', width: '15%', marginTop: '5px', marginBottom: '5px'}}>
                     <div style={{display: 'block'}}>
-                        <button class="button_head" style={{fontSize: '15px', width: '14vw', marginTop: '1vh'}} onClick={(event) => this.showDropDown(event)}> Tools </button>
-                        <div style={{position: 'absolute', overflow: 'visible !important'}} hidden={this.state.hide_dropdown}>
-                            gfdgfdsgfds
-                        </div>
+                        <button class="button_head" style={{fontSize: '15px', width: '100%', marginTop: '1vh'}} onClick={(event) => this.showDropDown(event)}> Profile </button>
                     </div>
                 </div>
+                <div class="big_form_drop" style={{position: 'absolute', clear: 'both', width: '100vw', overflow: 'visible', zIndex: '10000'}} hidden={this.state.hide_dropdown}>
+                           {this.showHistory()}
+                    </div>
                 <div style={{clear: 'both'}}>
                     <img src={Scheffle} style={{height: '12vh', maxWidth: '85vw', marginBottom: '2vh'}}></img>
                 </div>
