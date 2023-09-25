@@ -139,6 +139,9 @@ export class SearchBarComponent extends React.Component {
                 this.setState({cant_guess: true, autocomp_results: []})
             }
             else if (data.guess_data[9] == 's') {
+                if (this.state.user != '') {
+                    this.state.history[data.numguesses - 1]++;
+                }
                 this.setState({autocomp_results: [], num_guesses: new_guesses, guesses: x, cant_guess: true, win: true, answer: data.guess_data.slice(0, 9), hide_winning_popup: false})
             }
             else {
