@@ -25,7 +25,8 @@ export class SearchBarComponent extends React.Component {
             hide_winning_popup: true,
             cant_guess: false,
             history: [],
-            hide_dropdown: true
+            hide_dropdown: true,
+            attr: ['wins', 'majors', 'debut', 'age', 'country', 'college']
         }
     }
 
@@ -66,7 +67,7 @@ export class SearchBarComponent extends React.Component {
         return (
             <div class="big_form">
                 <div style={{clear: 'both'}}><h2 style={{fontFamily: 'Copperplate', fontSize: window.innerWidth < 450 ? '30px' : '40px'}}>{this.state.guesses[index][1] + " " + this.state.guesses[index][2]}</h2></div>
-                <table cellSpacing='5px' style={{margin: '0 auto', width: window.innerWidth < 450 ? '95%' : '80%'}}>
+                <table cellSpacing='5px' height='50px' style={{margin: '0 auto', width: window.innerWidth < 450 ? '95%' : '80%'}}>
                     {this.state.guesses[index].slice(3, 9).map((attr, index1) => {
                         var type = '';
                         var arrow = '';
@@ -105,11 +106,14 @@ export class SearchBarComponent extends React.Component {
                             }
                         }
                         
-                        return (
-                        <div class={type}  style={{lineHeight: '20px'}}>
-                            {attr}<br></br>
-                            {this.state.guesses[index1 + 10] == 'w'}
-                            <div style={{fontSize: '20px'}}>{arrow}</div>
+                        return (   
+                        <div style={{display: 'table-cell', width: '10%'}}>
+                            {this.state.attr[index1]}
+                            <div class={type}  style={{lineHeight: '20px'}}>
+                                {attr}<br></br>
+                                {this.state.guesses[index1 + 10] == 'w'}
+                                <div style={{fontSize: '20px'}}>{arrow}</div>
+                            </div>
                         </div>
                         )
                     })}

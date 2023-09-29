@@ -1,6 +1,7 @@
 import React from 'react';
 import './css/HomeComponent.css';
 import { SearchBarComponent } from './SearchBarComponent';
+import { FooterComponent } from './FooterComponent';
 
 export class HomeComponent extends React.Component {
     constructor(props) {
@@ -15,6 +16,7 @@ export class HomeComponent extends React.Component {
                 <div class="center_text">
                     <SearchBarComponent />
                 </div>
+                {/* <FooterComponent /> */}
             </div>
         )
     }
