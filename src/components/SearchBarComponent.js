@@ -5,6 +5,13 @@ import Scheffle from './Scheffle_logo.jpeg';
 import { json } from 'react-router';
 import { toHaveAccessibleDescription } from '@testing-library/jest-dom/matchers';
 import CanvasJSReact from '@canvasjs/react-charts';
+import Wins from './Wins.jpeg';
+import Majors from './Majors.jpeg';
+import Debut from './Debut.jpeg';
+import Age from './Age.jpeg';
+import Country from './Country.jpeg';
+import College from './College.jpeg';
+
 
 export class SearchBarComponent extends React.Component {
 
@@ -26,7 +33,7 @@ export class SearchBarComponent extends React.Component {
             cant_guess: false,
             history: [],
             hide_dropdown: true,
-            attr: ['wins', 'majors', 'debut', 'age', 'country', 'college']
+            attr: [Wins, Majors, Debut, Age, Country, College]
         }
     }
 
@@ -66,7 +73,7 @@ export class SearchBarComponent extends React.Component {
     returnGuess(index) {
         return (
             <div class="big_form">
-                <div style={{clear: 'both'}}><h2 style={{fontFamily: 'Copperplate', fontSize: window.innerWidth < 450 ? '30px' : '40px'}}>{this.state.guesses[index][1] + " " + this.state.guesses[index][2]}</h2></div>
+                <div style={{clear: 'both'}}><h2 style={{fontFamily: 'Copperplate', marginBottom: '0', fontSize: window.innerWidth < 450 ? '30px' : '45px'}}>{this.state.guesses[index][1] + " " + this.state.guesses[index][2]}</h2></div>
                 <table cellSpacing='5px' height='50px' style={{margin: '0 auto', width: window.innerWidth < 450 ? '95%' : '80%'}}>
                     {this.state.guesses[index].slice(3, 9).map((attr, index1) => {
                         var type = '';
@@ -81,11 +88,11 @@ export class SearchBarComponent extends React.Component {
                         }
                         else if (index1 == 2 || index1 == 3) { 
                             if (this.state.guesses[index][index1 + 10] == 'u') {
-                                arrow = <div>&#8593;</div>;
+                                arrow = '\u2191'
                                 type = "second2"; 
                             }
                             else if (this.state.guesses[index][index1 + 10] == 'd') {
-                                arrow = <div>&#8595;</div>;
+                                arrow = '\u2193';
                                 type = "second2"; 
                             }
                             else {
@@ -94,11 +101,11 @@ export class SearchBarComponent extends React.Component {
                         }
                         else {
                             if (this.state.guesses[index][index1 + 10] == 'u') {
-                                arrow = <div>&#8593;</div>;
+                                arrow = '\u2193';
                                 type = "third2"; 
                             }
                             else if (this.state.guesses[index][index1 + 10] == 'd') {
-                                arrow = <div>&#8595;</div>;
+                                arrow = '\u2191';
                                 type = "third2"; 
                             }
                             else {
@@ -108,11 +115,11 @@ export class SearchBarComponent extends React.Component {
                         
                         return (   
                         <div style={{display: 'table-cell', width: '10%'}}>
-                            {this.state.attr[index1]}
-                            <div class={type}  style={{lineHeight: '20px'}}>
-                                {attr}<br></br>
-                                {this.state.guesses[index1 + 10] == 'w'}
-                                <div style={{fontSize: '20px'}}>{arrow}</div>
+                            <img src={this.state.attr[index1]} style={{width: '100%', height: '25px'}}></img>
+                            <div class={type}  style={{lineHeight: '0px', marginTop: '10px'}}>
+                                <p>{attr}<span style={{display: 'inline', width: '2px', margin: '0', padding: '0'}}>{arrow}</span></p><br></br>
+                                {/* {this.state.guesses[index1 + 10] == 'w'}
+                                <div style={{fontSize: '20px', display: 'inline'}}>{arrow}</div> */}
                             </div>
                         </div>
                         )
