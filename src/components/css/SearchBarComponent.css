@@ -73,7 +73,10 @@
     border-radius: 25px;
     width: 100%;
     max-width: 600px;
-    margin: 0 auto;
+    margin-left: 0;
+    display: inline-block;
+    margin-right: 0;
+    margin-bottom: 5px;
     box-shadow: 2px 2px 2px 4px rgba(50, 50, 93, 0.1),
       2px 8px 20px 2px rgba(50, 50, 93, 0.1), 2px 6px 8px 2px rgba(0, 0, 0, 0.07);
 }
@@ -121,7 +124,7 @@
     background-color: white;
     height: 45px;
     padding: 2%;
-    font-family: 'Garamond';
+    font-family: 'Nexa', sans-serif;
     white-space: nowrap;
     /* font-size: 18px; */
     vertical-align: middle;
@@ -129,6 +132,17 @@
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
 }
+
+.image {
+    max-width: 100%; /* Ensure the image doesn't exceed its parent's width */
+    max-height: 100%; /* Ensure the image doesn't exceed its parent's height */
+    width: 60%; /* Set the image's width to 50% of its parent's width */
+    height: auto; /* Maintain the image's aspect ratio */
+    position: absolute; /* Position the image within the container */
+    top: 50%; /* Center the image vertically */
+    left: 50%; /* Center the image horizontally */
+    transform: translate(-50%, -50%); /* Center the image precisely */
+  }
 
 .first2_cor {
     box-shadow: 2px 2px 2px 4px rgba(50, 50, 93, 0.1),
@@ -138,7 +152,7 @@
     height: 45px;
     padding: 2%;
     white-space: nowrap;
-    font-family: 'Garamond';
+    font-family: 'Nexa', sans-serif;
     /* font-size: 18px; */
     vertical-align: middle;
     animation: fadeInAnimation ease .8s;
@@ -172,7 +186,7 @@
     background-color: white;
     height: 45px;
     padding: 2%;
-    font-family: 'Garamond';
+    font-family: 'Nexa', sans-serif;
     /* font-size: 22px; */
     vertical-align: middle;
     animation: fadeInAnimation ease 1.6s;
@@ -187,7 +201,7 @@
     background-color: green;
     height: 45px;
     padding: 2%;
-    font-family: 'Garamond';
+    font-family: 'Nexa', sans-serif;
     /* font-size: 22px; */
     vertical-align: middle;
     animation: fadeInAnimation ease 1.6s;
@@ -204,6 +218,7 @@
     padding: 2%;
     font-family: 'Garamond';
     white-space: nowrap;
+    font-family: 'Nexa', sans-serif;
     /* font-size: 18px; */
     vertical-align: middle;
     animation: fadeInAnimation ease 2.4s;
@@ -216,6 +231,7 @@
         2px 8px 20px 2px rgba(50, 50, 93, 0.1), 2px 6px 8px 2px rgba(0, 0, 0, 0.07);
     border-radius: 50%;
     background-color: green;
+    font-family: 'Nexa', sans-serif;
     height: 45px;
     padding: 2%;
     white-space: nowrap;

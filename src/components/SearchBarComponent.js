@@ -10,6 +10,7 @@ import Debut from './Debut.jpeg';
 import Age from './Age.jpeg';
 import Country from './Country.jpeg';
 import College from './College.jpeg';
+import Golfer from './img.png';
 
 
 export class SearchBarComponent extends React.Component {
@@ -34,6 +35,7 @@ export class SearchBarComponent extends React.Component {
             history_labels: ['1', '2', '3', '4', '5', '6', '7', '8'],
             hide_dropdown: true,
             attr: [Wins, Majors, Debut, Age, Country, College],
+            labels: ["Wins", "Majors", "Debut", "Age", "Origin", "Drv. Dist."]
         }
     }
 
@@ -78,8 +80,9 @@ export class SearchBarComponent extends React.Component {
     returnGuess(index) {
         return (
             <div class="big_form">
-                <div style={{clear: 'both'}}><h2 style={{fontFamily: 'Copperplate', marginBottom: '0', fontSize: window.innerWidth < 450 ? '30px' : '45px'}}>{this.state.guesses[index][1] + " " + this.state.guesses[index][2]}</h2></div>
-                <table cellSpacing='5px' height='50px' style={{margin: '0 auto', width: window.innerWidth < 450 ? '95%' : '80%'}}>
+                <img src={Golfer} style={{ border: 'thick solid white', borderRadius: '50%', height: '60px', marginTop: '5px'}}></img>
+                <div style={{clear: 'both'}}><h2 style={{fontFamily: "'Nexa', sans-serif;", fontWeight: 'bolder', marginBottom: '0', marginTop: '0', fontSize: window.innerWidth < 450 ? '34px' : '50px'}}>{this.state.guesses[index][1] + " " + this.state.guesses[index][2]}</h2></div>
+                <table cellSpacing='5px' height='0px' style={{tableLayout: 'fixed', margin: '0 auto', width: window.innerWidth < 450 ? '100%' : '95%'}}>
                     {this.state.guesses[index].slice(3, 9).map((attr, index1) => {
                         var text_size = String(100 / String(attr).length) + '%'
                         var type = '';
@@ -118,17 +121,33 @@ export class SearchBarComponent extends React.Component {
                                 type = "first2_cor";
                             }
                         }
-                        
-                        return (   
-                        <div style={{display: 'table-cell', width: '10%'}}>
-                            <img src={this.state.attr[index1]} style={{width: '100%', height: '25px'}}></img>
-                            <div class={type}  style={{lineHeight: '0px', marginTop: '10px'}}>
-                                <p style={{fontSize: '130%'}}>{attr}<span style={{display: 'inline', width: '2px', margin: '0', padding: '0'}}>{arrow}</span></p><br></br>
-                                {/* {this.state.guesses[index1 + 10] == 'w'}
-                                <div style={{fontSize: '20px', display: 'inline'}}>{arrow}</div> */}
+                        if (index1 != 4) {
+                            return (   
+                            <div style={{display: 'table-cell', width: '10%', height: '35px'}}>
+                                {/* <img src={this.state.attr[index1]} style={{width: '100%', height: '25px'}}></img> */}
+                                <div class={type}  style={{alignItems: 'center', height: '100%', marginTop: '0', marginBottom: '0', textAlign: 'center'}}>
+                                    <div style={{width: '100%', lineHeight: '0px', display: 'flex', justifyContent: 'center', alignContent: 'center', height: '100%', fontSize: '110%'}}>
+                                    <p>{attr}{arrow}</p>
+                                    </div>
+                                    {/* {this.state.guesses[index1 + 10] == 'w'}
+                                    
+                                    <div style={{fontSize: '20px', display: 'inline'}}>{arrow}</div> */}
+                                </div>
                             </div>
-                        </div>
-                        )
+                            )
+                        }
+                        else {
+                            return (
+                            <div style={{display: 'table-cell', width: '10%', height: '35px'}}>
+                                <div class={type}  style={{alignItems: 'center', height: '100%', marginTop: '0', marginBottom: '0', textAlign: 'center', display: 'inline-block', width: '100%', justifyContent: 'center', alignContent: 'center'}}>
+                                <div style={{width: '100%', lineHeight: '0px', display: 'flex', justifyContent: 'center', alignContent: 'center', height: '100%', fontSize: '110%', position: 'relative'}}>
+                                    <img class="image" src="https://www.countryflags.com/wp-content/uploads/united-states-of-america-flag-png-large.png"></img>
+                                </div>
+                                </div>
+                            </div>
+                            )
+                        }
+
                     })}
                 </table>
             </div>
@@ -380,6 +399,26 @@ export class SearchBarComponent extends React.Component {
         )
     }
 
+    returnLabel(index) {
+        var border_r = 'thin solid black';
+        var border_l = 'thin solid black';
+        var f_size = '12px';
+        if (index == 0) {
+            border_l = 'none';
+        }
+        if (index == 4) {
+            f_size = '11px';
+        }
+        if (index == 5) {
+            border_r = 'none';
+        }
+        return (<div style={{display: 'table-cell', width: '10%', borderRight: border_r, borderLeft: border_l}}>
+                    {/* <img src={this.state.attr[index]} style={{width: '100%', height: '25px'}}></img> */}
+                    <h4 style={{fontFamily: "'Nexa', sans-serif;", fontSize: f_size}}>{this.state.labels[index]}</h4>
+                </div>
+                )
+    }
+
     render() {
         var im_wid = '15%';
         if (window.innerWidth < 750) {
@@ -423,6 +462,16 @@ export class SearchBarComponent extends React.Component {
                                 )
                         })}</div>
                     </form>
+                </div>
+                <div style={{width: '100%', maxWidth: '600px', margin: '0 auto'}}>
+                    <table cellSpacing='5px' height='50px' style={{tableLayout: 'fixed', margin: '0 auto', backgroundColor: 'white', borderRadius: '25px', width: window.innerWidth < 450 ? '100%' : '95%'}}>
+                        {this.returnLabel(0)}
+                        {this.returnLabel(1)}
+                        {this.returnLabel(2)}
+                        {this.returnLabel(3)}
+                        {this.returnLabel(4)}
+                        {this.returnLabel(5)}
+                    </table>
                 </div>
                 <div>
                     {this.state.num_guesses > 7 && this.returnGuess(7)}
