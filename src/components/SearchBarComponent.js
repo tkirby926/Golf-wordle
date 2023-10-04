@@ -2,8 +2,7 @@ import './css/SearchBarComponent.css';
 import React from 'react';
 import UserProfile from './Userprofile';
 import Scheffle from './Scheffle_logo.jpeg';
-import { json } from 'react-router';
-import { toHaveAccessibleDescription } from '@testing-library/jest-dom/matchers';
+import Chart from 'react-apexcharts'
 import CanvasJSReact from '@canvasjs/react-charts';
 import Wins from './Wins.jpeg';
 import Majors from './Majors.jpeg';
@@ -32,8 +31,9 @@ export class SearchBarComponent extends React.Component {
             hide_winning_popup: true,
             cant_guess: false,
             history: [],
+            history_labels: ['1', '2', '3', '4', '5', '6', '7', '8'],
             hide_dropdown: true,
-            attr: [Wins, Majors, Debut, Age, Country, College]
+            attr: [Wins, Majors, Debut, Age, Country, College],
         }
     }
 
@@ -66,7 +66,12 @@ export class SearchBarComponent extends React.Component {
             if (data.no_guesses) {
                 cant_guess = true;
             }
-            this.setState({cant_guess: cant_guess, guesses: data.guesses, history: data.history, user: data.user == "null" ? '' : data.user, hide_login_popup: hide_popup, num_guesses: data.guesses.length})
+            this.setState({cant_guess: cant_guess, guesses: data.guesses, history: data.history, 
+                user: data.user == "null" ? '' : data.user, hide_login_popup: hide_popup, num_guesses: data.guesses.length,
+                series: [{
+                    name: 'series-1',
+                    data: [data.history]
+                    }]})
         })
     }
 
@@ -76,6 +81,7 @@ export class SearchBarComponent extends React.Component {
                 <div style={{clear: 'both'}}><h2 style={{fontFamily: 'Copperplate', marginBottom: '0', fontSize: window.innerWidth < 450 ? '30px' : '45px'}}>{this.state.guesses[index][1] + " " + this.state.guesses[index][2]}</h2></div>
                 <table cellSpacing='5px' height='50px' style={{margin: '0 auto', width: window.innerWidth < 450 ? '95%' : '80%'}}>
                     {this.state.guesses[index].slice(3, 9).map((attr, index1) => {
+                        var text_size = String(100 / String(attr).length) + '%'
                         var type = '';
                         var arrow = '';
                         if (index1 == 4 || index1 == 5) { 
@@ -101,15 +107,15 @@ export class SearchBarComponent extends React.Component {
                         }
                         else {
                             if (this.state.guesses[index][index1 + 10] == 'u') {
-                                arrow = '\u2193';
-                                type = "third2"; 
+                                arrow = '\u2191';
+                                type = "first2"; 
                             }
                             else if (this.state.guesses[index][index1 + 10] == 'd') {
-                                arrow = '\u2191';
-                                type = "third2"; 
+                                arrow = '\u2193';
+                                type = "first2"; 
                             }
                             else {
-                                type = "third2_cor";
+                                type = "first2_cor";
                             }
                         }
                         
@@ -117,7 +123,7 @@ export class SearchBarComponent extends React.Component {
                         <div style={{display: 'table-cell', width: '10%'}}>
                             <img src={this.state.attr[index1]} style={{width: '100%', height: '25px'}}></img>
                             <div class={type}  style={{lineHeight: '0px', marginTop: '10px'}}>
-                                <p>{attr}<span style={{display: 'inline', width: '2px', margin: '0', padding: '0'}}>{arrow}</span></p><br></br>
+                                <p style={{fontSize: '130%'}}>{attr}<span style={{display: 'inline', width: '2px', margin: '0', padding: '0'}}>{arrow}</span></p><br></br>
                                 {/* {this.state.guesses[index1 + 10] == 'w'}
                                 <div style={{fontSize: '20px', display: 'inline'}}>{arrow}</div> */}
                             </div>
@@ -249,44 +255,126 @@ export class SearchBarComponent extends React.Component {
         if (this.state.user == '') {
             return "";
         }
-        var CanvasJS = CanvasJSReact.CanvasJS;
-        var CanvasJSChart = CanvasJSReact.CanvasJSChart;
-        const options = {
-			animationEnabled: true,
-			theme: "light2",
-			title:{
-				text: "Guess History"
-			},
-			axisX: {
-				title: "Guesses",
-				reversed: true,
-			},
-			axisY: {
-				title: "Frequency",
-                interval: 1,
-				includeZero: true,
-				labelFormatter: this.addSymbols
-			},
-			data: [{
-				type: "bar",
-				dataPoints: [
-					{ y:  this.state.history[0], label: "1" },
-					{ y:  this.state.history[1], label: "2" },
-					{ y:  this.state.history[2], label: "3" },
-					{ y:  this.state.history[3], label: "4" },
-					{ y:  this.state.history[4], label: "5" },
-					{ y:  this.state.history[5], label: "6" },
-					{ y:  this.state.history[6], label: "7" },
-                    { y:  this.state.history[7], label: "8" },
-                    { y:  this.state.history[8], label: "Incorrect" }
-				]
-			}]
-		}
+        // var series = [{
+        //     name: "sales",
+        //     data: [{
+        //       x: '1',
+        //       y: this.state.history[0]
+        //     }, {
+        //       x: '2',
+        //       y: this.state.history[1]
+        //     }, {
+        //       x: '3',
+        //       y: this.state.history[2]
+        //     }, {
+        //       x: '4',
+        //       y: this.state.history[3]
+        //     }, {
+        //       x: '5',
+        //       y: this.state.history[4]
+        //     }, {
+        //       x: '6',
+        //       y: this.state.history[5]
+        //     }, {
+        //       x: '7',
+        //       y: this.state.history[6]
+        //     }, {
+        //       x: '8',
+        //       y: this.state.history[7]
+        //     }]
+        //   }];
+        // var options = {
+        //     chart: {
+        //         type: 'bar',
+        //         height: 380
+        //     },
+        //     xaxis: {
+        //         type: 'category',
+        //         labels: ['1', '2', '3', '4', '5', '6', '7', '8'],
+
+        //     },
+        //     title: {
+        //         text: 'Grouped Labels on the X-axis',
+        //     },
+        //     tooltip: {
+        //         x: ['1', '2', '3', '4', '5', '6', '7', '8']
+        //     }
+        // }
+        var maxi = Math.max(...this.state.history);
+        const labelFormatter = (value) => {
+            return Math.round(value); // This rounds the value to the nearest whole number
+          };
+        var series = [{
+            name: "Freq",
+            data: [{
+              x: '1',
+              y: this.state.history[0]
+            }, {
+              x: '2',
+              y: this.state.history[1]
+            }, {
+              x: '3',
+              y: this.state.history[2]
+            }, {
+              x: '4',
+              y: this.state.history[3]
+            }, {
+              x: '5',
+              y: this.state.history[4]
+            }, {
+              x: '6',
+              y: this.state.history[5]
+            }, {
+              x: '7',
+              y: this.state.history[6]
+            }, {
+              x: '8',
+              y: this.state.history[7]
+            }]
+          }];
+          var options = {
+            chart: {
+              type: 'bar',
+              height: 380,
+              toolbar: {
+                  show: false
+              }
+            },
+            yaxis: {
+                title: {
+                    text: 'Frequency'
+                },
+                tickAmount: 5, // Set the number of ticks you want
+                max: maxi + maxi % 5, 
+                forceNiceScale: true,
+                labels: {
+                    formatter: labelFormatter
+                } 
+            },
+            xaxis: {
+                title: {
+                    text: 'Number of Guesses'
+                },
+              type: 'category',
+              labels: {
+                formatter: (value, index) => {
+                    return value
+                }
+              }
+            },
+            title: {
+                text: 'Guess History',
+            },
+            tooltip: {
+              x: {
+                formatter: function(val) {
+                  return "1"
+                }  
+              }
+            }}
 		return (
 		<div>
-			<CanvasJSChart options = {options}
-				/* onRef={ref => this.chart = ref} */
-			/>
+			<Chart options={options} series={series} type="bar" width='100%' height={320} />
 			{/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
 		</div>
         )
