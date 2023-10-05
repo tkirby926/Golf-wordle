@@ -81,7 +81,8 @@ export class SearchBarComponent extends React.Component {
             <div class="big_form">
                 <img src={Golfer} style={{ border: 'thick solid white', borderRadius: '50%', height: '60px', marginTop: '5px'}}></img>
                 <div style={{clear: 'both'}}><h2 style={{fontFamily: "'Nexa', sans-serif;", fontWeight: 'bolder', marginBottom: '0', marginTop: '0', fontSize: window.innerWidth < 450 ? '34px' : '50px'}}>{this.state.guesses[index][1] + " " + this.state.guesses[index][2]}</h2></div>
-                <table cellSpacing='5px' height='0px' style={{tableLayout: 'fixed', margin: '0 auto', width: window.innerWidth < 450 ? '100%' : '95%'}}>
+                <div style={{width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '0', padding: '0'}}>
+                <table margin='0' padding='0' borderCollapse="collapse" cellSpacing='0px' height='0px' style={{tableLayout: 'fixed', margin: '0 auto', width: window.innerWidth < 450 ? '98%' : '95%'}}>
                     {this.state.guesses[index].slice(3, 9).map((attr, index1) => {
                         var text_size = String(100 / String(attr).length) + '%'
                         var type = '';
@@ -151,9 +152,9 @@ export class SearchBarComponent extends React.Component {
                         else {
                             return (
                             <div style={{display: 'table-cell', width: '10%', height: '35px'}}>
-                                <div class={type}  style={{alignItems: 'center', height: '100%', marginTop: '0', marginBottom: '0', textAlign: 'center', display: 'inline-block', width: '100%', justifyContent: 'center', alignContent: 'center'}}>
+                                <div class={type}  style={{alignItems: 'center', height: '100%', marginTop: '0', marginBottom: '0', textAlign: 'center', display: 'inline-block', width: '95%', justifyContent: 'center', alignContent: 'center'}}>
                                 <div style={{width: '100%', lineHeight: '0px', display: 'flex', justifyContent: 'center', alignContent: 'center', height: '100%', fontSize: '110%', position: 'relative'}}>
-                                    <img class="image" src="https://www.countryflags.com/wp-content/uploads/united-states-of-america-flag-png-large.png"></img>
+                                    <img style={{border: '1.5px solid black', borderRadius: '4px', display: 'block'}} class="image" src="https://www.countryflags.com/wp-content/uploads/united-states-of-america-flag-png-large.png"></img>
                                 </div>
                                 </div>
                             </div>
@@ -162,6 +163,7 @@ export class SearchBarComponent extends React.Component {
 
                     })}
                 </table>
+                </div>
             </div>
         )
     }
@@ -410,7 +412,7 @@ export class SearchBarComponent extends React.Component {
                            {this.showHistory()}
                     </div>
                 <div style={{clear: 'both'}}>
-                    <img src={Scheffle} style={{height: '12vh', maxWidth: '85vw', marginBottom: '2vh'}}></img>
+                    <img src={Scheffle} style={{height: '12vh', maxWidth: '85vw', marginBottom: '2vh', marginTop: '2vh', borderRadius: '5px'}}></img>
                 </div>
                 <div class="box">
                     <div class="big_form_white" hidden={this.state.user == ''}>
@@ -438,7 +440,7 @@ export class SearchBarComponent extends React.Component {
                         })}</div>
                     </form>
                 </div>
-                <div style={{width: '100%', maxWidth: '600px', margin: '0 auto'}}>
+                <div style={{width: '100%', maxWidth: '600px', margin: '0 auto', marginTop: '15px'}}>
                     <table cellSpacing='5px' height='50px' style={{tableLayout: 'fixed', margin: '0 auto', backgroundColor: 'white', borderRadius: '25px', width: window.innerWidth < 450 ? '100%' : '95%'}}>
                         {this.returnLabel(0)}
                         {this.returnLabel(1)}
