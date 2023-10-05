@@ -35,7 +35,7 @@ export class SearchBarComponent extends React.Component {
             history_labels: ['1', '2', '3', '4', '5', '6', '7', '8'],
             hide_dropdown: true,
             attr: [Wins, Majors, Debut, Age, Country, College],
-            labels: ["Wins", "Majors", "Debut", "Age", "Origin", "Drv. Dist."]
+            labels: ["Wins", "Majors", "Debut", "Age", "Avg. Drive", "Origin"]
         }
     }
 
@@ -51,6 +51,9 @@ export class SearchBarComponent extends React.Component {
                 this.setState({autocomp_results: data.results})
             })
         }
+        else {
+            this.setState({autocomp_results: []})
+        }
     }
     
     componentDidMount() {
@@ -60,16 +63,12 @@ export class SearchBarComponent extends React.Component {
             return response.json();
         })
         .then((data) => {
-            var hide_popup = true;
             var cant_guess = false;
-            if (data.user == 'null') {
-                hide_popup = false;
-            }
             if (data.no_guesses) {
                 cant_guess = true;
             }
             this.setState({cant_guess: cant_guess, guesses: data.guesses, history: data.history, 
-                user: data.user == "null" ? '' : data.user, hide_login_popup: hide_popup, num_guesses: data.guesses.length,
+                user: data.user == "null" ? '' : data.user, num_guesses: data.guesses.length,
                 series: [{
                     name: 'series-1',
                     data: [data.history]
@@ -87,9 +86,22 @@ export class SearchBarComponent extends React.Component {
                         var text_size = String(100 / String(attr).length) + '%'
                         var type = '';
                         var arrow = '';
-                        if (index1 == 4 || index1 == 5) { 
+                        if (index1 == 5) { 
                             if (this.state.guesses[index][index1 + 10] != 's') {
                                 type = "third2";
+                            }
+                            else {
+                                type = "third2_cor";
+                            }
+                        }
+                        else if (index == 4) {
+                            if (this.state.guesses[index][index1 + 10] == 'u') {
+                                arrow = '\u2191'
+                                type = "third2"; 
+                            }
+                            else if (this.state.guesses[index][index1 + 10] == 'd') {
+                                arrow = '\u2193';
+                                type = "third2"; 
                             }
                             else {
                                 type = "third2_cor";
@@ -121,12 +133,12 @@ export class SearchBarComponent extends React.Component {
                                 type = "first2_cor";
                             }
                         }
-                        if (index1 != 4) {
+                        if (index1 != 5) {
                             return (   
                             <div style={{display: 'table-cell', width: '10%', height: '35px'}}>
                                 {/* <img src={this.state.attr[index1]} style={{width: '100%', height: '25px'}}></img> */}
                                 <div class={type}  style={{alignItems: 'center', height: '100%', marginTop: '0', marginBottom: '0', textAlign: 'center'}}>
-                                    <div style={{width: '100%', lineHeight: '0px', display: 'flex', justifyContent: 'center', alignContent: 'center', height: '100%', fontSize: '110%'}}>
+                                    <div style={{width: '100%', lineHeight: '0px', display: 'flex', justifyContent: 'center', fontWeight: 'bold', alignContent: 'center', height: '100%', fontSize: '110%'}}>
                                     <p>{attr}{arrow}</p>
                                     </div>
                                     {/* {this.state.guesses[index1 + 10] == 'w'}
@@ -188,7 +200,7 @@ export class SearchBarComponent extends React.Component {
 
     logIn(e) {
         e.preventDefault();
-        this.setState({hide_login_popup: false})
+        this.setState({hide_login_popup: false, hide_create_popup: true})
     }
 
     closeLoginPopup(e) {
@@ -198,7 +210,7 @@ export class SearchBarComponent extends React.Component {
 
     showCreateProfileWindow(e) {
         e.preventDefault();
-        this.setState({hide_login_popup: true, hide_create_popup: false});
+        this.setState({hide_login_popup: true, hide_create_popup: false, error: ''});
     }
 
     closeCreatePopup(e) {
@@ -229,6 +241,10 @@ export class SearchBarComponent extends React.Component {
     submitCreate(e) {
         e.preventDefault();
         if (e.target[2].value != e.target[3].value) {
+            this.setState({error: "Passwords do not match. Please try again."})
+            return;
+        }
+        if (e.target[1].value == e.target[3].value) {
             this.setState({error: "Passwords do not match. Please try again."})
             return;
         }
@@ -274,51 +290,6 @@ export class SearchBarComponent extends React.Component {
         if (this.state.user == '') {
             return "";
         }
-        // var series = [{
-        //     name: "sales",
-        //     data: [{
-        //       x: '1',
-        //       y: this.state.history[0]
-        //     }, {
-        //       x: '2',
-        //       y: this.state.history[1]
-        //     }, {
-        //       x: '3',
-        //       y: this.state.history[2]
-        //     }, {
-        //       x: '4',
-        //       y: this.state.history[3]
-        //     }, {
-        //       x: '5',
-        //       y: this.state.history[4]
-        //     }, {
-        //       x: '6',
-        //       y: this.state.history[5]
-        //     }, {
-        //       x: '7',
-        //       y: this.state.history[6]
-        //     }, {
-        //       x: '8',
-        //       y: this.state.history[7]
-        //     }]
-        //   }];
-        // var options = {
-        //     chart: {
-        //         type: 'bar',
-        //         height: 380
-        //     },
-        //     xaxis: {
-        //         type: 'category',
-        //         labels: ['1', '2', '3', '4', '5', '6', '7', '8'],
-
-        //     },
-        //     title: {
-        //         text: 'Grouped Labels on the X-axis',
-        //     },
-        //     tooltip: {
-        //         x: ['1', '2', '3', '4', '5', '6', '7', '8']
-        //     }
-        // }
         var maxi = Math.max(...this.state.history);
         const labelFormatter = (value) => {
             return Math.round(value); // This rounds the value to the nearest whole number
@@ -349,7 +320,10 @@ export class SearchBarComponent extends React.Component {
             }, {
               x: '8',
               y: this.state.history[7]
-            }]
+            }, {
+                x: 'Fail',
+                y: this.state.history[8]
+              }]
           }];
           var options = {
             chart: {
@@ -363,8 +337,8 @@ export class SearchBarComponent extends React.Component {
                 title: {
                     text: 'Frequency'
                 },
-                tickAmount: 5, // Set the number of ticks you want
-                max: maxi + maxi % 5, 
+                tickAmount: 4, // Set the number of ticks you want
+                max: maxi + (4 - (maxi % 4)), 
                 forceNiceScale: true,
                 labels: {
                     formatter: labelFormatter
@@ -391,6 +365,7 @@ export class SearchBarComponent extends React.Component {
                 }  
               }
             }}
+        console.log(1 % 5)
 		return (
 		<div>
 			<Chart options={options} series={series} type="bar" width='100%' height={320} />
@@ -449,7 +424,7 @@ export class SearchBarComponent extends React.Component {
                     </div>  
                     <form name="search">
                         <input disabled={this.state.num_guesses >= 8} type="text" style={{caretColor: 'transparent'}} disabled={this.state.cant_guess}  placeholder={this.state.cant_guess ? "Thanks for Playing" : "Guess Here"} id='search' class="input" name="txt" onKeyUp={(e) => this.autoComp(e)} />
-                        <div>{this.state.autocomp_results.slice(0, 5).map((result, index) => {
+                        <div style={{position: 'absolute', width: '100%'}}>{this.state.autocomp_results.slice(0, 5).map((result, index) => {
                                 return (
                                 <tr class="user_button" onClick = {(e) => this.acceptGuess(e, result[0])}>
                                     <td style={{width: im_wid}}>
@@ -502,8 +477,8 @@ export class SearchBarComponent extends React.Component {
                     <p style={{fontWeight: 'bold'}}>Log in to your account to track your progress, or create an account using the link below</p>
                     <p style={{display: 'inline'}}>Username:</p> <input type='text' style={{display: 'inline'}}></input><br></br>
                     <p style={{display: 'inline'}}>Password:</p> <input type='password' style={{display: 'inline'}}></input><br></br><br></br>
-                    <button type='submit'>Submit</button><br></br>
-                    <button onClick={(e) => this.showCreateProfileWindow(e)}>Create Profile</button>
+                    <button class="button_standard" type='submit'>Submit</button><br></br>
+                    <button class="link_button" onClick={(e) => this.showCreateProfileWindow(e)}>Create Profile Here</button>
                     <p style={{color: 'red'}}>{this.state.error}</p>
                 </form>
                 <form class="popup" hidden={this.state.hide_create_popup} onSubmit={(e) => this.submitCreate(e)}>
@@ -512,7 +487,9 @@ export class SearchBarComponent extends React.Component {
                     <p style={{display: 'inline'}}>Username:</p> <input type='text' style={{display: 'inline'}}></input><br></br>
                     <p style={{display: 'inline'}}>Password:</p> <input type='password' style={{display: 'inline'}}></input><br></br>
                     <p style={{display: 'inline'}}>Confirm Password:</p> <input type='password' style={{display: 'inline'}}></input><br></br><br></br>
-                    <button type='submit'>Submit</button><br></br>
+                    <button class="button_standard" type='submit'>Create Profile</button><br></br>
+                    <button class="link_button" onClick={(e) => this.logIn(e)}>Log In to Existing Account Here</button>
+                    <p style={{color: 'red'}}>{this.state.error}</p>
                 </form>
                 <form class="popup" hidden={this.state.hide_winning_popup}>
                     <button style={{float: 'right'}} onClick={(e) => this.closeWinningPopup(e)}>X</button>
