@@ -2,14 +2,7 @@ import './css/SearchBarComponent.css';
 import React from 'react';
 import UserProfile from './Userprofile';
 import Scheffle from './Scheffle_logo.jpeg';
-import Chart from 'react-apexcharts'
-import CanvasJSReact from '@canvasjs/react-charts';
-import Wins from './Wins.jpeg';
-import Majors from './Majors.jpeg';
-import Debut from './Debut.jpeg';
-import Age from './Age.jpeg';
-import Country from './Country.jpeg';
-import College from './College.jpeg';
+import Chart from 'react-apexcharts';
 import Golfer from './img.png';
 
 
@@ -34,8 +27,8 @@ export class SearchBarComponent extends React.Component {
             history: [],
             history_labels: ['1', '2', '3', '4', '5', '6', '7', '8'],
             hide_dropdown: true,
-            attr: [Wins, Majors, Debut, Age, Country, College],
-            labels: ["Wins", "Majors", "Debut", "Age", "Avg. Drive", "Origin"]
+            labels: ["Wins", "Majors", "World Rank", "Age", "Avg. Drive", "Origin"],
+            hide_rules_popup: true
         }
     }
 
@@ -68,7 +61,9 @@ export class SearchBarComponent extends React.Component {
                 cant_guess = true;
             }
             this.setState({cant_guess: cant_guess, guesses: data.guesses, history: data.history, 
-                user: data.user == "null" ? '' : data.user, num_guesses: data.guesses.length,
+                user: data.user == "null" ? '' : data.user, 
+                num_guesses: data.guesses.length,
+                hide_rules_popup: data.user == "null" ? false : true,
                 series: [{
                     name: 'series-1',
                     data: [data.history]
@@ -87,6 +82,7 @@ export class SearchBarComponent extends React.Component {
                         var text_size = String(100 / String(attr).length) + '%'
                         var type = '';
                         var arrow = '';
+                        var suffix = '';
                         if (index1 == 5) { 
                             if (this.state.guesses[index][index1 + 10] != 's') {
                                 type = "third2";
@@ -120,6 +116,18 @@ export class SearchBarComponent extends React.Component {
                             else {
                                 type = "second2_cor";
                             }
+                            if (index1 == 2) {
+                                suffix = 'th';
+                                if (this.state.guesses[index][5] % 10 == 3) {
+                                    suffix = 'rd';
+                                }
+                                if (this.state.guesses[index][5] % 10 == 2) {
+                                    suffix = 'nd';
+                                }
+                                if (this.state.guesses[index][5] % 10 == 1) {
+                                    suffix = 'st';
+                                }
+                            }
                         }
                         else {
                             if (this.state.guesses[index][index1 + 10] == 'u') {
@@ -136,11 +144,11 @@ export class SearchBarComponent extends React.Component {
                         }
                         if (index1 != 5) {
                             return (   
-                            <div style={{display: 'table-cell', width: '10%', height: '35px'}}>
+                            <div style={{display: 'table-cell', width: '10%'}}>
                                 {/* <img src={this.state.attr[index1]} style={{width: '100%', height: '25px'}}></img> */}
                                 <div class={type}  style={{alignItems: 'center', height: '100%', marginTop: '0', marginBottom: '0', textAlign: 'center'}}>
                                     <div style={{width: '100%', lineHeight: '0px', display: 'flex', justifyContent: 'center', fontWeight: 'bold', alignContent: 'center', height: '100%', fontSize: '110%'}}>
-                                    <p>{attr}{arrow}</p>
+                                    <p style={{display: 'inline'}}>{attr}<p style={{display: 'inline', fontSize: '10px'}}>{suffix}</p>{arrow}</p>
                                     </div>
                                     {/* {this.state.guesses[index1 + 10] == 'w'}
                                     
@@ -202,7 +210,7 @@ export class SearchBarComponent extends React.Component {
 
     logIn(e) {
         e.preventDefault();
-        this.setState({hide_login_popup: false, hide_create_popup: true})
+        this.setState({hide_login_popup: false, hide_create_popup: true, hide_rules_popup: true})
     }
 
     closeLoginPopup(e) {
@@ -282,6 +290,11 @@ export class SearchBarComponent extends React.Component {
                 this.setState({error: data.error})
             }
         });
+    }
+
+    closeRulesPopup(e) {
+        e.preventDefault();
+        this.setState({hide_rules_popup: true})
     }
     
     showDropDown() {
@@ -396,19 +409,27 @@ export class SearchBarComponent extends React.Component {
                 )
     }
 
+    showRulesPopup(e) {
+        e.preventDefault();
+        this.setState({hide_rules_popup: false, hide_login_popup: true, hide_create_popup: true})
+    }
+
     render() {
         var im_wid = '15%';
+        var div_width = '100%';
         if (window.innerWidth < 750) {
             im_wid = '30%';
+            div_width = '98%';
         }
         return (
-            <div style={{width: '100%', position: 'relative'}}>
-                <div hidden={this.state.user == ''} style={{ marginRight: '5%', width: '15%', marginTop: '5px', marginBottom: '5px'}}>
-                    <div style={{display: 'block'}}>
-                        <button class="button_head" style={{fontSize: '15px', width: '100%', marginTop: '1vh'}} onClick={(event) => this.showDropDown(event)}> Profile </button>
+            <div style={{width: div_width, position: 'relative'}}>
+                <div  style={{ marginRight: '5%', width: '15%', marginTop: '5px', marginBottom: '5px'}}>
+                    <div style={{display: 'flex'}}>
+                        <button hidden={this.state.user == ''} class="button_standard" style={{fontSize: '15px', width: '100%', marginTop: '1vh', marginLeft: '10px', float: 'left'}} onClick={(event) => this.showDropDown(event)}> Profile </button>
+                        <button class="button_standard" style={{fontSize: '15px', width: '100%', marginTop: '1vh', marginLeft: '10px', float: 'left'}} onClick={(event) => this.showRulesPopup(event)}> Rules </button>
                     </div>
                 </div>
-                <div class="big_form_drop" style={{position: 'absolute', clear: 'both', width: '100vw', overflow: 'visible', zIndex: '10000'}} hidden={this.state.hide_dropdown}>
+                <div class="big_form_drop" style={{position: 'absolute', clear: 'both', width: '95%', overflow: 'visible', zIndex: '10000'}} hidden={this.state.hide_dropdown}>
                            {this.showHistory()}
                     </div>
                 <div style={{clear: 'both'}}>
@@ -498,6 +519,28 @@ export class SearchBarComponent extends React.Component {
                     <p>Congrats for getting today's golfer, {this.state.answer[1]} {this.state.answer[2]}</p>
                     {!this.state.hide_winning_popup && this.returnGuess(this.state.num_guesses - 1)}
                     {!this.state.hide_winning_popup && this.showHistory()}   
+                </form>
+                <form class="popup" style={{textAlign: 'left', fontSize: window.innerWidth < 750 ? '14px' : 'inherit'}} hidden={this.state.hide_rules_popup}>
+                    <button style={{float: 'right'}} onClick={(e) => this.closeRulesPopup(e)}>X</button>
+                    <p>Welcome to the Scheffle! If you already know the rules, feel free to close this window. Otherwise, they are explained below!</p>  
+                    <p>The objective of the game is to figure out today's golfer of the day in the least amount of guesses. Start by picking a PGA Tour Professional using the search bar.
+                         Once selected, you will see your chosen player's number of career wins, number of career major championships, current World Golf Ranking, Age, 
+                         Average Driving Distance, and Country of Origin. In addition, you will see the following hints to narrow your search for the correct golfer:</p>
+                         <ul>
+                             <li>If a field for your selected golfer is colored green, that means that the golfer of the day and your guesses golfer share that value (for example,
+                                 if the bubble for "Majors" is colored green, then it means the golfer you guessed and the golfer of the day have the same number of major championship wins).
+                             </li>
+                             <li>If a field for your selected golfer has an up arrow next to the value, it means the golfer of the day has a higher number for that category than your guessed
+                                  golfer (this does not apply for the Country of Origin category).
+                             </li>
+                             <li>If a field for your selected golfer has an down arrow next to the value, it means the golfer of the day has a lower number for that category than your guessed
+                                  golfer (this does not apply for the Country of Origin category).
+                             </li>
+                             <li>If all fields are marked in green for your guessed golfer, that means you correctly guessed the golfer of the day!
+                             </li>
+                        </ul>
+                        <p>You will have 8 guesses to correctly guess the golfer of the day before failing. However, try to solve the puzzle in the smallest number of guesses possible!</p>
+                        <p hidden={this.state.user != ''} style={{fontWeight: 'bold'}}>Please Log In or Create an Account <button onClick={(e) => this.logIn(e)} class="link_button">HERE</button> in order to keep track of your daily guess history and average score.</p>
                 </form>
                 <div class="popup" hidden={this.state.hide_popup}>
                     <button style={{float: 'right'}} onClick={(e) => this.closePopup(e)}>X</button>

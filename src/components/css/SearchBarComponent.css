@@ -193,6 +193,11 @@
     animation-fill-mode: forwards;
 }
 
+.suffix {
+  display: inline;
+  
+}
+
 @keyframes fadeInAnimation {
     0% {
         opacity: 0;
