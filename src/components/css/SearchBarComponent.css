@@ -130,7 +130,7 @@
     white-space: nowrap;
     /* font-size: 18px; */
     vertical-align: middle;
-    animation: fadeInAnimation ease .8s;
+    animation: fadeInAnimation ease 1s;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
 }
@@ -188,7 +188,7 @@
     font-family: 'Nexa', sans-serif;
     /* font-size: 18px; */
     vertical-align: middle;
-    animation: fadeInAnimation ease .8s;
+    animation: fadeInAnimation ease 1s;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
 }
@@ -229,7 +229,7 @@
     font-family: 'Nexa', sans-serif;
     /* font-size: 22px; */
     vertical-align: middle;
-    animation: fadeInAnimation ease 1.6s;
+    animation: fadeInAnimation ease 2s;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
 }
@@ -245,7 +245,7 @@
     font-family: 'Nexa', sans-serif;
     /* font-size: 22px; */
     vertical-align: middle;
-    animation: fadeInAnimation ease 1.6s;
+    animation: fadeInAnimation ease 2s;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
 }
@@ -263,7 +263,7 @@
     border: 1px solid black;
     /* font-size: 18px; */
     vertical-align: middle;
-    animation: fadeInAnimation ease 2.4s;
+    animation: fadeInAnimation ease 3s;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
 }
@@ -281,7 +281,7 @@
     font-family: 'Garamond';
     /* font-size: 18px; */
     vertical-align: middle;
-    animation: fadeInAnimation ease 2.4s;
+    animation: fadeInAnimation ease 3s;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
 }

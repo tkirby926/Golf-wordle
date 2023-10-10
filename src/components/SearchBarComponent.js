@@ -14,7 +14,7 @@ export class SearchBarComponent extends React.Component {
             guess_val: "",
             num_guesses: 0,
             guesses: [],
-            hide_popup: true,
+            hide_losing_popup: true,
             hide_login_popup: true,
             hide_create_popup: true,
             user: '',
@@ -62,6 +62,7 @@ export class SearchBarComponent extends React.Component {
             }
             this.setState({cant_guess: cant_guess, guesses: data.guesses, history: data.history, 
                 user: data.user == "null" ? '' : data.user, 
+                answer: cant_guess ? data.chosenplayer : [],
                 num_guesses: data.guesses.length,
                 hide_rules_popup: data.user == "null" ? false : true,
                 series: [{
@@ -71,75 +72,81 @@ export class SearchBarComponent extends React.Component {
         })
     }
 
-    returnGuess(index) {
+    returnGuess(index, wrong_ans) {
+        var guess = this.state.guesses[index]
+        if (wrong_ans) {
+            guess = this.state.answer;
+        }
         return (
             <div class="big_form">
                 <img src={Golfer} style={{ border: 'thick solid white', borderRadius: '50%', height: '60px', marginTop: '5px'}}></img>
-                <div style={{clear: 'both'}}><h2 style={{fontFamily: "'Nexa', sans-serif;", fontWeight: 'bolder', marginBottom: '0', marginTop: '0', fontSize: window.innerWidth < 450 ? '34px' : '50px'}}>{this.state.guesses[index][1] + " " + this.state.guesses[index][2]}</h2></div>
+                <div style={{clear: 'both'}}><h2 style={{fontFamily: "'Nexa', sans-serif;", fontWeight: 'bolder', marginBottom: '0', marginTop: '0', fontSize: window.innerWidth < 450 ? '34px' : '50px'}}>{guess[1] + " " + guess[2]}</h2></div>
                 <div style={{width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '0', padding: '0'}}>
                 <table margin='0' padding='0' borderCollapse="collapse" cellSpacing='0px' height='0px' style={{tableLayout: 'fixed', margin: '0 auto', width: window.innerWidth < 450 ? '98%' : '95%'}}>
-                    {this.state.guesses[index].slice(3, 9).map((attr, index1) => {
-                        var text_size = String(100 / String(attr).length) + '%'
-                        var type = '';
+                    {guess.slice(3, 9).map((attr, index1) => {
+                        var type = 'first2';
                         var arrow = '';
                         var suffix = '';
-                        if (index1 == 5) { 
-                            if (this.state.guesses[index][index1 + 10] != 's') {
-                                type = "third2";
-                            }
-                            else {
-                                type = "third2_cor";
-                            }
-                        }
-                        else if (index == 4) {
-                            if (this.state.guesses[index][index1 + 10] == 'u') {
-                                arrow = '\u2191'
-                                type = "third2"; 
-                            }
-                            else if (this.state.guesses[index][index1 + 10] == 'd') {
-                                arrow = '\u2193';
-                                type = "third2"; 
-                            }
-                            else {
-                                type = "third2_cor";
-                            }
-                        }
-                        else if (index1 == 2 || index1 == 3) { 
-                            if (this.state.guesses[index][index1 + 10] == 'u') {
-                                arrow = '\u2191'
-                                type = "second2"; 
-                            }
-                            else if (this.state.guesses[index][index1 + 10] == 'd') {
-                                arrow = '\u2193';
-                                type = "second2"; 
-                            }
-                            else {
-                                type = "second2_cor";
-                            }
-                            if (index1 == 2) {
-                                suffix = 'th';
-                                if (this.state.guesses[index][5] % 10 == 3) {
-                                    suffix = 'rd';
+                        if (!wrong_ans) {
+                            if (index1 == 5) { 
+                                if (this.state.guesses[index][index1 + 10] != 's') {
+                                    type = "third2";
                                 }
-                                if (this.state.guesses[index][5] % 10 == 2) {
-                                    suffix = 'nd';
-                                }
-                                if (this.state.guesses[index][5] % 10 == 1) {
-                                    suffix = 'st';
+                                else {
+                                    type = "third2_cor";
                                 }
                             }
-                        }
-                        else {
-                            if (this.state.guesses[index][index1 + 10] == 'u') {
-                                arrow = '\u2191';
-                                type = "first2"; 
+                            else if (index1 == 4) {
+                                suffix = 'y';
+                                if (this.state.guesses[index][index1 + 10] == 'u') {
+                                    arrow = '\u2191'
+                                    type = "third2"; 
+                                }
+                                else if (this.state.guesses[index][index1 + 10] == 'd') {
+                                    arrow = '\u2193';
+                                    type = "third2"; 
+                                }
+                                else {
+                                    type = "third2_cor";
+                                }
                             }
-                            else if (this.state.guesses[index][index1 + 10] == 'd') {
-                                arrow = '\u2193';
-                                type = "first2"; 
+                            else if (index1 == 2 || index1 == 3) { 
+                                if (this.state.guesses[index][index1 + 10] == 'u') {
+                                    arrow = '\u2191'
+                                    type = "second2"; 
+                                }
+                                else if (this.state.guesses[index][index1 + 10] == 'd') {
+                                    arrow = '\u2193';
+                                    type = "second2"; 
+                                }
+                                else {
+                                    type = "second2_cor";
+                                }
+                                if (index1 == 2) {
+                                    suffix = 'th';
+                                    if (this.state.guesses[index][5] % 10 == 3) {
+                                        suffix = 'rd';
+                                    }
+                                    if (this.state.guesses[index][5] % 10 == 2) {
+                                        suffix = 'nd';
+                                    }
+                                    if (this.state.guesses[index][5] % 10 == 1) {
+                                        suffix = 'st';
+                                    }
+                                }
                             }
                             else {
-                                type = "first2_cor";
+                                if (this.state.guesses[index][index1 + 10] == 'u') {
+                                    arrow = '\u2191';
+                                    type = "first2"; 
+                                }
+                                else if (this.state.guesses[index][index1 + 10] == 'd') {
+                                    arrow = '\u2193';
+                                    type = "first2"; 
+                                }
+                                else {
+                                    type = "first2_cor";
+                                }
                             }
                         }
                         if (index1 != 5) {
@@ -176,14 +183,13 @@ export class SearchBarComponent extends React.Component {
         )
     }
 
-    closePopup(e) {
+    closeLosingPopup(e) {
         e.preventDefault()
-        this.setState({hide_popup: true})
+        this.setState({hide_losing_popup: true})
     }
 
     acceptGuess(e, guessid) {
         e.preventDefault();
-        var new_guesses = this.state.num_guesses + 1;
         fetch(UserProfile.getUrl() + "/api/v1/check_guess/" + guessid, { credentials: 'include', method: 'GET' })
         .then((response) => {
             if (!response.ok) throw Error(response.statusText);
@@ -200,17 +206,23 @@ export class SearchBarComponent extends React.Component {
                 if (this.state.user != '') {
                     this.state.history[data.numguesses - 1]++;
                 }
-                this.setState({autocomp_results: [], num_guesses: new_guesses, guesses: x, cant_guess: true, win: true, answer: data.guess_data.slice(0, 9), hide_winning_popup: false})
+                this.setState({autocomp_results: [], num_guesses: data.numguesses, guesses: x, cant_guess: true, win: true, answer: data.guess_data.slice(0, 9), hide_winning_popup: false})
             }
             else {
-                this.setState({guesses: x, win: data.success, num_guesses: new_guesses, autocomp_results: []})
+                this.setState({guesses: x, win: data.success, num_guesses: data.numguesses, autocomp_results: []})
+                if (data.numguesses >= 8) {
+                    if (this.state.history.length > 0) {
+                        this.state.history[this.state.history.length - 1]++;
+                    }
+                    this.setState({cant_guess: true, answer: data.chosen_player, hide_losing_popup: false, hide_winning_popup: true})
+                }
             }
         })
     }
 
     logIn(e) {
         e.preventDefault();
-        this.setState({hide_login_popup: false, hide_create_popup: true, hide_rules_popup: true})
+        this.setState({hide_login_popup: false, hide_create_popup: true, hide_rules_popup: true, hide_winning_popup: true})
     }
 
     closeLoginPopup(e) {
@@ -220,7 +232,7 @@ export class SearchBarComponent extends React.Component {
 
     showCreateProfileWindow(e) {
         e.preventDefault();
-        this.setState({hide_login_popup: true, hide_create_popup: false, error: ''});
+        this.setState({hide_dropdown: true, hide_login_popup: true, hide_create_popup: false, hide_winning_popup: true, hide_rules_popup: true, error: ''});
     }
 
     closeCreatePopup(e) {
@@ -228,9 +240,14 @@ export class SearchBarComponent extends React.Component {
         this.setState({hide_create_popup: true})
     }
 
-    closeWinningPopup(e) {
+    closeEndingPopup(e, win) {
         e.preventDefault();
-        this.setState({hide_winning_popup: true})
+        if (win) {
+            this.setState({hide_winning_popup: true})
+        }
+        else {
+            this.setState({hide_losing_popup: true})
+        }
     }
 
     submitLogin(e) {
@@ -298,7 +315,7 @@ export class SearchBarComponent extends React.Component {
     }
     
     showDropDown() {
-        this.setState({hide_dropdown: !this.state.hide_dropdown})
+        this.setState({hide_dropdown: !this.state.hide_dropdown, hide_login_popup: true, hide_losing_popup: true, hide_rules_popup: true, hide_create_popup: true})
     }
 
     showHistory() {
@@ -409,9 +426,30 @@ export class SearchBarComponent extends React.Component {
                 )
     }
 
+    showEndingBanner(win) {
+        var wrong_ans = false;
+        var message = "Congrats for getting today's golfer, ";
+        if (!win) {
+            message = "Sadly, you did not get today's golfer. Today's golfer was ";
+            wrong_ans = true;
+        }
+        return (
+        <form class="popup">
+            <button style={{float: 'right'}} onClick={(e) => this.closeEndingPopup(e, win)}>X</button>
+            <p>{message}{this.state.answer[1]} {this.state.answer[2]}.</p>
+            {this.returnGuess(this.state.num_guesses - 1, wrong_ans)}
+            {this.showHistory()}
+            <p hidden={this.state.user != ''} style={{fontWeight: 'bold'}}>Please Log In or Create an Account <button onClick={(e) => this.logIn(e)} class="link_button">HERE</button> in order to keep track of your daily guess history and average score.</p>   
+        </form>)
+    }
+
+    showDropdownTitle() {
+        return (<p>Today's golfer of the day:</p>)
+    }
+
     showRulesPopup(e) {
         e.preventDefault();
-        this.setState({hide_rules_popup: false, hide_login_popup: true, hide_create_popup: true})
+        this.setState({hide_rules_popup: !this.state.hide_rules_popup, hide_login_popup: true, hide_create_popup: true, hide_dropdown: true})
     }
 
     render() {
@@ -425,12 +463,16 @@ export class SearchBarComponent extends React.Component {
             <div style={{width: div_width, position: 'relative'}}>
                 <div  style={{ marginRight: '5%', width: '15%', marginTop: '5px', marginBottom: '5px'}}>
                     <div style={{display: 'flex'}}>
-                        <button hidden={this.state.user == ''} class="button_standard" style={{fontSize: '15px', width: '100%', marginTop: '1vh', marginLeft: '10px', float: 'left'}} onClick={(event) => this.showDropDown(event)}> Profile </button>
+                        <button class="button_standard" style={{display: this.state.user == '' ? 'none' : 'initial', fontSize: '15px', width: '100%', marginTop: '1vh', marginLeft: '10px', float: 'left'}} onClick={(event) => this.showDropDown(event)}> Profile </button>
                         <button class="button_standard" style={{fontSize: '15px', width: '100%', marginTop: '1vh', marginLeft: '10px', float: 'left'}} onClick={(event) => this.showRulesPopup(event)}> Rules </button>
                     </div>
                 </div>
                 <div class="big_form_drop" style={{position: 'absolute', clear: 'both', width: '95%', overflow: 'visible', zIndex: '10000'}} hidden={this.state.hide_dropdown}>
-                           {this.showHistory()}
+                    {this.state.answer.length > 0 && this.showDropdownTitle()}
+                    <div style={{width: '95%', margin: '0 auto'}}>
+                        {this.state.answer.length > 0 && this.returnGuess(8, true)}
+                    </div>
+                    {this.showHistory()}
                     </div>
                 <div style={{clear: 'both'}}>
                     <img src={Scheffle} style={{height: '12vh', maxWidth: '85vw', marginBottom: '2vh', marginTop: '2vh', borderRadius: '5px'}}></img>
@@ -472,55 +514,55 @@ export class SearchBarComponent extends React.Component {
                     </table>
                 </div>
                 <div>
-                    {this.state.num_guesses > 7 && this.returnGuess(7)}
+                    {this.state.num_guesses > 7 && this.returnGuess(7, false)}
                 </div>
                 <div>
-                    {this.state.num_guesses > 6 && this.returnGuess(6)}
+                    {this.state.num_guesses > 6 && this.returnGuess(6, false)}
                 </div>
                 <div>
-                    {this.state.num_guesses > 5 && this.returnGuess(5)}
+                    {this.state.num_guesses > 5 && this.returnGuess(5, false)}
                 </div>
                 <div>
-                    {this.state.num_guesses > 4 && this.returnGuess(4)}
+                    {this.state.num_guesses > 4 && this.returnGuess(4, false)}
                 </div>
                 <div>
-                    {this.state.num_guesses > 3 && this.returnGuess(3)}
+                    {this.state.num_guesses > 3 && this.returnGuess(3, false)}
                 </div>
                 <div>
-                    {this.state.num_guesses > 2 && this.returnGuess(2)}
+                    {this.state.num_guesses > 2 && this.returnGuess(2, false)}
                 </div>
                 <div>
-                    {this.state.num_guesses > 1 && this.returnGuess(1)}
+                    {this.state.num_guesses > 1 && this.returnGuess(1, false)}
                 </div>
                 <div>
-                    {this.state.num_guesses > 0 && this.returnGuess(0)}
+                    {this.state.num_guesses > 0 && this.returnGuess(0, false)}
                 </div>
                 <form class="popup" hidden={this.state.hide_login_popup} onSubmit={(e) => this.submitLogin(e)}>
                     <button style={{float: 'right'}} onClick={(e) => this.closeLoginPopup(e)}>X</button>
                     <p style={{fontWeight: 'bold'}}>Log in to your account to track your progress, or create an account using the link below</p>
-                    <p style={{display: 'inline'}}>Username:</p> <input type='text' style={{display: 'inline'}}></input><br></br>
-                    <p style={{display: 'inline'}}>Password:</p> <input type='password' style={{display: 'inline'}}></input><br></br><br></br>
-                    <button class="button_standard" type='submit'>Submit</button><br></br>
+                    <div style={{width: '30%', minWidth: '300px', display: 'block', margin: '0 auto'}}>
+                        <p style={{display: 'inline', float: 'left', margin: '0', padding: '0'}}>Username:</p> <input type='text' style={{display: 'inline', float: 'right', marginBottom: '5px'}}></input><br></br>
+                        <p style={{clear: 'both', display: 'inline', float: 'left', margin: '0', padding: '0'}}>Password:</p> <input type='password' style={{display: 'inline', float: 'right'}}></input><br></br><br></br>
+                    </div>
+                    <button style={{clear: 'both'}} class="button_standard" type='submit'>Submit</button><br></br>
                     <button class="link_button" onClick={(e) => this.showCreateProfileWindow(e)}>Create Profile Here</button>
                     <p style={{color: 'red'}}>{this.state.error}</p>
                 </form>
                 <form class="popup" hidden={this.state.hide_create_popup} onSubmit={(e) => this.submitCreate(e)}>
                     <button style={{float: 'right'}} onClick={(e) => this.closeCreatePopup(e)}>X</button>
                     <p style={{fontWeight: 'bold'}}>Create Profile</p>
-                    <p style={{display: 'inline'}}>Username:</p> <input type='text' style={{display: 'inline'}}></input><br></br>
-                    <p style={{display: 'inline'}}>Password:</p> <input type='password' style={{display: 'inline'}}></input><br></br>
-                    <p style={{display: 'inline'}}>Confirm Password:</p> <input type='password' style={{display: 'inline'}}></input><br></br><br></br>
-                    <button class="button_standard" type='submit'>Create Profile</button><br></br>
+                    <div style={{width: '30%', minWidth: '300px', display: 'block', margin: '0 auto'}}>
+                        <p style={{display: 'inline', float: 'left', margin: '0', padding: '0'}}>Username:</p> <input type='text' style={{display: 'inline', float: 'right', marginBottom: '5px'}}></input><br></br>
+                        <p style={{clear: 'both', display: 'inline', float: 'left', margin: '0', padding: '0'}}>Password:</p> <input type='password' style={{display: 'inline', float: 'right', marginBottom: '5px'}}></input><br></br>
+                        <p style={{clear: 'both', display: 'inline', float: 'left', margin: '0', padding: '0'}}>Confirm Password:</p> <input type='password' style={{display: 'inline', float: 'right'}}></input><br></br><br></br>
+                    </div>
+                    <button style={{clear: 'both', marginTop: '5px', minWidth: '150px'}} class="button_standard" type='submit'>Create Profile</button><br></br>
                     <button class="link_button" onClick={(e) => this.logIn(e)}>Log In to Existing Account Here</button>
                     <p style={{color: 'red'}}>{this.state.error}</p>
                 </form>
-                <form class="popup" hidden={this.state.hide_winning_popup}>
-                    <button style={{float: 'right'}} onClick={(e) => this.closeWinningPopup(e)}>X</button>
-                    <p>Congrats for getting today's golfer, {this.state.answer[1]} {this.state.answer[2]}</p>
-                    {!this.state.hide_winning_popup && this.returnGuess(this.state.num_guesses - 1)}
-                    {!this.state.hide_winning_popup && this.showHistory()}   
-                </form>
-                <form class="popup" style={{textAlign: 'left', fontSize: window.innerWidth < 750 ? '14px' : 'inherit'}} hidden={this.state.hide_rules_popup}>
+                {!this.state.hide_winning_popup && this.showEndingBanner(true)}
+                {!this.state.hide_losing_popup && this.showEndingBanner(false)}
+                <form class="popup" style={{textAlign: 'left', fontSize: window.innerWidth < 750 ? '13px' : 'inherit'}} hidden={this.state.hide_rules_popup}>
                     <button style={{float: 'right'}} onClick={(e) => this.closeRulesPopup(e)}>X</button>
                     <p>Welcome to the Scheffle! If you already know the rules, feel free to close this window. Otherwise, they are explained below!</p>  
                     <p>The objective of the game is to figure out today's golfer of the day in the least amount of guesses. Start by picking a PGA Tour Professional using the search bar.
@@ -542,10 +584,6 @@ export class SearchBarComponent extends React.Component {
                         <p>You will have 8 guesses to correctly guess the golfer of the day before failing. However, try to solve the puzzle in the smallest number of guesses possible!</p>
                         <p hidden={this.state.user != ''} style={{fontWeight: 'bold'}}>Please Log In or Create an Account <button onClick={(e) => this.logIn(e)} class="link_button">HERE</button> in order to keep track of your daily guess history and average score.</p>
                 </form>
-                <div class="popup" hidden={this.state.hide_popup}>
-                    <button style={{float: 'right'}} onClick={(e) => this.closePopup(e)}>X</button>
-                    Sorry bitch you lose
-                </div>
             </div>   
         )
     }
