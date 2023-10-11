@@ -4,7 +4,8 @@ import UserProfile from './Userprofile';
 import Scheffle from './Scheffle_logo.jpeg';
 import Chart from 'react-apexcharts';
 import Golfer from './img.png';
-
+import Check from './check.webp';
+import RedX from './Redx.webp';
 
 export class SearchBarComponent extends React.Component {
 
@@ -23,12 +24,16 @@ export class SearchBarComponent extends React.Component {
             error: '',
             answer: [],
             hide_winning_popup: true,
+            hide_friends_popup: true,
             cant_guess: false,
             history: [],
             history_labels: ['1', '2', '3', '4', '5', '6', '7', '8'],
             hide_dropdown: true,
             labels: ["Wins", "Majors", "World Rank", "Age", "Avg. Drive", "Origin"],
-            hide_rules_popup: true
+            hide_rules_popup: true,
+            search_status: 'r',
+            friends: [],
+            requests: []
         }
     }
 
@@ -63,6 +68,8 @@ export class SearchBarComponent extends React.Component {
             this.setState({cant_guess: cant_guess, guesses: data.guesses, history: data.history, 
                 user: data.user == "null" ? '' : data.user, 
                 answer: cant_guess ? data.chosenplayer : [],
+                friends: data.friends,
+                requests: data.requests,
                 num_guesses: data.guesses.length,
                 hide_rules_popup: data.user == "null" ? false : true,
                 series: [{
@@ -230,6 +237,11 @@ export class SearchBarComponent extends React.Component {
         this.setState({hide_login_popup: true})
     }
 
+    showFriendsPopup(e) {
+        e.preventDefault();
+        this.setState({hide_friends_popup: !this.state.hide_friends_popup, hide_losing_popup: true, hide_winning_popup: true, hide_dropdown: true, hide_rules_popup: true})
+    }
+
     showCreateProfileWindow(e) {
         e.preventDefault();
         this.setState({hide_dropdown: true, hide_login_popup: true, hide_create_popup: false, hide_winning_popup: true, hide_rules_popup: true, error: ''});
@@ -315,7 +327,7 @@ export class SearchBarComponent extends React.Component {
     }
     
     showDropDown() {
-        this.setState({hide_dropdown: !this.state.hide_dropdown, hide_login_popup: true, hide_losing_popup: true, hide_rules_popup: true, hide_create_popup: true})
+        this.setState({hide_dropdown: !this.state.hide_dropdown, hide_friends_popup: true, hide_login_popup: true, hide_losing_popup: true, hide_rules_popup: true, hide_create_popup: true})
     }
 
     showHistory() {
@@ -397,7 +409,6 @@ export class SearchBarComponent extends React.Component {
                 }  
               }
             }}
-        console.log(1 % 5)
 		return (
 		<div>
 			<Chart options={options} series={series} type="bar" width='100%' height={320} />
@@ -447,6 +458,108 @@ export class SearchBarComponent extends React.Component {
         return (<p>Today's golfer of the day:</p>)
     }
 
+    sendRequest(e) {
+        e.preventDefault();
+        console.log(e.target[0].value)
+        var formdata = new FormData();
+        formdata.append("user", e.target[0].value);
+        const requestOptions = {
+            method: 'POST',
+            credentials: 'include',
+            body: formdata
+        }
+        fetch(UserProfile.getUrl() + '/api/v1/add_friend', requestOptions)
+        .then(response => response.json())
+        .then((data) => {
+            if (data.status !== "success") {
+                this.setState({search_status: 'b'})
+            }
+            else {
+                this.setState({search_status: 's'})
+            }
+        });
+    }
+
+    resetSearchState(e) {
+        e.preventDefault();
+        this.setState({search_status: 'r'})
+    }
+
+    acceptFriend(e, index) {
+        fetch(UserProfile.getUrl() + '/api/v1/accept_friend/' + this.state.requests[index], { credentials: 'include', method: 'PUT' })
+        .then(response => response.json())
+        .then((data) => {
+            if (data.status === "success") {
+                var arr = this.state.requests;
+                arr.splice(index, 1);
+                this.setState({requests: arr})
+            }
+        });
+    }
+
+    rejectFriend(e, index) {
+        fetch(UserProfile.getUrl() + '/api/v1/reject_friend/' + this.state.requests[index], { credentials: 'include', method: 'DELETE' })
+        .then(response => response.json())
+        .then((data) => {
+            if (data.status === "success") {
+                var arr = this.state.requests;
+                arr.splice(index, 1);
+                this.setState({requests: arr})
+            }
+        });
+    }
+
+    showFriends() {
+        var button_message = 'Submit'
+        var font_size = 'initial';
+        if (this.state.search_status == 's') {
+            button_message = 'Sent';
+        }
+        else if (this.state.search_status == 'b') {
+            button_message = 'User not found';
+            font_size = '8px';
+        }
+        return (
+            <div>
+                <form style={{height: '30px'}} onSubmit={(e) => this.sendRequest(e)}>
+                    <input class="input1" onKeyUp={(e) => this.resetSearchState(e)} type="text" id='search' name="search" placeholder="Add Friend"/>
+                    <button class="button_standard" type='submit' style={{width: '20%', height: '30px', marginRight: '5px', fontSize: font_size, minWidth: '0', float: 'right', padding: '2px'}}>{button_message}</button>
+                </form>
+                <div style={{clear: 'both'}} hidden={this.state.requests.length == 0}>
+                    <p>Friend Requests:</p>
+                    {this.state.requests.map((req, index) => {
+                        return (
+                            <div class="req">
+                                <p style={{width: '60%', float: 'left', margin: '0'}}>{req}</p>
+                                <img onClick={(e) => this.acceptFriend(e, index)} src={Check} style={{width: '5%', float: 'left'}}></img>
+                                <img onClick={(e) => this.rejectFriend(e, index)} src={RedX} style={{marginLeft: '5%', width: '5%', float: 'left'}}></img>
+                            </div>
+                        )
+                    })}
+                </div>
+                <div style={{clear: 'both'}}>
+                <p>Friends:</p>
+                {this.state.friends.map((friend, index) => {
+                    var num = friend[1];
+                    if (friend[1] == 9) {
+                        num = 'fail';
+                    }
+                    else if (friend[1] == 0) {
+                        num = '---';
+                    }
+                        return (
+                            <div class="req">
+                                <p style={{width: '60%', float: 'left', margin: '0'}}>{friend[0]}</p>
+                                <p style={{width: '20%', float: 'left', margin: '0'}}>{num}</p>
+                            </div>
+                        )
+                    })}
+                </div>
+                
+            </div>
+        )
+    }
+
     showRulesPopup(e) {
         e.preventDefault();
         this.setState({hide_rules_popup: !this.state.hide_rules_popup, hide_login_popup: true, hide_create_popup: true, hide_dropdown: true})
@@ -461,10 +574,11 @@ export class SearchBarComponent extends React.Component {
         }
         return (
             <div style={{width: div_width, position: 'relative'}}>
-                <div  style={{ marginRight: '5%', width: '15%', marginTop: '5px', marginBottom: '5px'}}>
+                <div  style={{ marginRight: '5%', width: '100%', marginTop: '5px', marginBottom: '5px'}}>
                     <div style={{display: 'flex'}}>
-                        <button class="button_standard" style={{display: this.state.user == '' ? 'none' : 'initial', fontSize: '15px', width: '100%', marginTop: '1vh', marginLeft: '10px', float: 'left'}} onClick={(event) => this.showDropDown(event)}> Profile </button>
-                        <button class="button_standard" style={{fontSize: '15px', width: '100%', marginTop: '1vh', marginLeft: '10px', float: 'left'}} onClick={(event) => this.showRulesPopup(event)}> Rules </button>
+                        <button class="button_standard" style={{display: this.state.user == '' ? 'none' : 'initial', fontSize: '15px', marginTop: '1vh', marginLeft: '10px', float: 'left', marginRight: '2px'}} onClick={(event) => this.showDropDown(event)}> Profile </button>
+                        <button class="button_standard" style={{fontSize: '15px', marginTop: '1vh', marginLeft: '10px', float: 'left'}} onClick={(event) => this.showRulesPopup(event)}> Rules </button>
+                        <button class="button_standard" style={{display: this.state.user == '' ? 'none' : 'initial', fontSize: '15px', marginTop: '1vh', marginLeft: '10px', float: 'right', marginRight: '10px'}} onClick={(event) => this.showFriendsPopup(event)}> Friends </button>
                     </div>
                 </div>
                 <div class="big_form_drop" style={{position: 'absolute', clear: 'both', width: '95%', overflow: 'visible', zIndex: '10000'}} hidden={this.state.hide_dropdown}>
@@ -473,7 +587,10 @@ export class SearchBarComponent extends React.Component {
                         {this.state.answer.length > 0 && this.returnGuess(8, true)}
                     </div>
                     {this.showHistory()}
-                    </div>
+                </div>
+                <div class="big_form_drop" style={{position: 'absolute', clear: 'both', width: '350px', maxWidth: '95%', overflow: 'visible', zIndex: '10000', right: '0'}} hidden={this.state.hide_friends_popup}>
+                    {this.showFriends()}
+                </div>
                 <div style={{clear: 'both'}}>
                     <img src={Scheffle} style={{height: '12vh', maxWidth: '85vw', marginBottom: '2vh', marginTop: '2vh', borderRadius: '5px'}}></img>
                 </div>
