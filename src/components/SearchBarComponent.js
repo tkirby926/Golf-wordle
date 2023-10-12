@@ -522,8 +522,8 @@ export class SearchBarComponent extends React.Component {
         return (
             <div>
                 <form style={{height: '30px'}} onSubmit={(e) => this.sendRequest(e)}>
-                    <input class="input1" onKeyUp={(e) => this.resetSearchState(e)} type="text" id='search' name="search" placeholder="Add Friend"/>
-                    <button class="button_standard" type='submit' style={{width: '20%', height: '30px', marginRight: '5px', fontSize: font_size, minWidth: '0', float: 'right', padding: '2px'}}>{button_message}</button>
+                    <input class="input1" onKeyUp={(e) => this.resetSearchState(e)} type="text" id='search1' name="search" placeholder="Add Friend"/>
+                    <button class="button_standard" type='submit' style={{width: '20%', height: '30px', marginRight: '10px', fontSize: font_size, minWidth: '0', float: 'right', padding: '2px'}}>{button_message}</button>
                 </form>
                 <div style={{clear: 'both'}} hidden={this.state.requests.length == 0}>
                     <p>Friend Requests:</p>
@@ -542,7 +542,7 @@ export class SearchBarComponent extends React.Component {
                 {this.state.friends.map((friend, index) => {
                     var num = friend[1];
                     if (friend[1] == 9) {
-                        num = 'fail';
+                        num = 'failed';
                     }
                     else if (friend[1] == 0) {
                         num = '---';
@@ -589,7 +589,7 @@ export class SearchBarComponent extends React.Component {
                     {this.showHistory()}
                 </div>
                 <div class="big_form_drop" style={{position: 'absolute', clear: 'both', width: '350px', maxWidth: '95%', overflow: 'visible', zIndex: '10000', right: '0'}} hidden={this.state.hide_friends_popup}>
-                    {this.showFriends()}
+                    {this.state.user != '' && this.showFriends()}
                 </div>
                 <div style={{clear: 'both'}}>
                     <img src={Scheffle} style={{height: '12vh', maxWidth: '85vw', marginBottom: '2vh', marginTop: '2vh', borderRadius: '5px'}}></img>
@@ -679,7 +679,7 @@ export class SearchBarComponent extends React.Component {
                 </form>
                 {!this.state.hide_winning_popup && this.showEndingBanner(true)}
                 {!this.state.hide_losing_popup && this.showEndingBanner(false)}
-                <form class="popup" style={{textAlign: 'left', fontSize: window.innerWidth < 750 ? '13px' : 'inherit'}} hidden={this.state.hide_rules_popup}>
+                <form class="popup" style={{textAlign: 'left', fontSize: window.innerWidth < 750 ? '12px' : 'inherit'}} hidden={this.state.hide_rules_popup}>
                     <button style={{float: 'right'}} onClick={(e) => this.closeRulesPopup(e)}>X</button>
                     <p>Welcome to the Scheffle! If you already know the rules, feel free to close this window. Otherwise, they are explained below!</p>  
                     <p>The objective of the game is to figure out today's golfer of the day in the least amount of guesses. Start by picking a PGA Tour Professional using the search bar.

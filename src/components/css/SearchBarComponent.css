@@ -146,12 +146,15 @@
   }
 
 .req {
-    background-color: grey;
+    background-color: black;
+    color: white;
     display: flex;
     padding-top: 5px;
     padding-bottom: 5px;
     border-radius: 25px;
     box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
+    width: 90%;
+    margin: 0 auto;
 }
 
 .input1 {
@@ -162,6 +165,7 @@
     margin-top: 5px;
     float: left;
     margin-top: 0;
+    text-align: center;
 }
 
 .button_standard {
