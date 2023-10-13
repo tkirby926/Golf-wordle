@@ -266,7 +266,7 @@ export class SearchBarComponent extends React.Component {
 
     submitLogin(e) {
         e.preventDefault();
-        fetch(UserProfile.getUrl() + '/login/' + e.target[1].value + '/' + e.target[2].value, { credentials: 'include', method: 'GET' })
+        fetch(UserProfile.getUrl() + '/login/' + e.target[0].value + '/' + e.target[1].value, { credentials: 'include', method: 'GET' })
         .then(response => response.json())
         .then((data) => {
             if (data.correct_login) {
@@ -281,17 +281,13 @@ export class SearchBarComponent extends React.Component {
 
     submitCreate(e) {
         e.preventDefault();
-        if (e.target[2].value != e.target[3].value) {
-            this.setState({error: "Passwords do not match. Please try again."})
-            return;
-        }
-        if (e.target[1].value == e.target[3].value) {
+        if (e.target[1].value != e.target[2].value) {
             this.setState({error: "Passwords do not match. Please try again."})
             return;
         }
         var formdata = new FormData();
-        formdata.append("username", e.target[1].value);
-        formdata.append("password", e.target[2].value);
+        formdata.append("username", e.target[0].value);
+        formdata.append("password", e.target[1].value);
         var requestOptions = {
             method: 'POST',
             body: formdata,
@@ -302,7 +298,7 @@ export class SearchBarComponent extends React.Component {
         .then(response => response.json())
         .then((data) => {
             if (data.success == 'yes') {
-                this.setState({user: e.target[1].value, hide_create_popup: true})
+                this.setState({user: e.target[0].value, hide_create_popup: true})
                 window.location.reload();
             }
         });
@@ -448,7 +444,7 @@ export class SearchBarComponent extends React.Component {
         }
         return (
         <form class="popup">
-            <button style={{float: 'right'}} onClick={(e) => this.closeEndingPopup(e, win)}>X</button>
+            <span class='button_like' style={{float: 'right'}} onClick={(e) => this.closeEndingPopup(e, win)}>X</span>
             <p>{message}{this.state.answer[1]} {this.state.answer[2]}.</p>
             {this.returnGuess(this.state.num_guesses - 1, wrong_ans)}
             {this.showHistory()}
@@ -657,7 +653,7 @@ export class SearchBarComponent extends React.Component {
                     {this.state.num_guesses > 0 && this.returnGuess(0, false)}
                 </div>
                 <form class="popup" hidden={this.state.hide_login_popup} onSubmit={(e) => this.submitLogin(e)}>
-                    <button style={{float: 'right'}} onClick={(e) => this.closeLoginPopup(e)}>X</button>
+                    <span class='button_like' style={{float: 'right'}} onClick={(e) => this.closeLoginPopup(e)}>X</span>
                     <p style={{fontWeight: 'bold'}}>Log in to your account to track your progress, or create an account using the link below</p>
                     <div style={{width: '30%', minWidth: '300px', display: 'block', margin: '0 auto'}}>
                         <p style={{display: 'inline', float: 'left', margin: '0', padding: '0'}}>Username:</p> <input type='text' style={{display: 'inline', float: 'right', marginBottom: '5px'}}></input><br></br>
@@ -668,7 +664,7 @@ export class SearchBarComponent extends React.Component {
                     <p style={{color: 'red'}}>{this.state.error}</p>
                 </form>
                 <form class="popup" hidden={this.state.hide_create_popup} onSubmit={(e) => this.submitCreate(e)}>
-                    <button style={{float: 'right'}} onClick={(e) => this.closeCreatePopup(e)}>X</button>
+                    <span class='button_like' style={{float: 'right'}} onClick={(e) => this.closeCreatePopup(e)}>X</span>
                     <p style={{fontWeight: 'bold'}}>Create Profile</p>
                     <div style={{width: '30%', minWidth: '300px', display: 'block', margin: '0 auto'}}>
                         <p style={{display: 'inline', float: 'left', margin: '0', padding: '0'}}>Username:</p> <input type='text' style={{display: 'inline', float: 'right', marginBottom: '5px'}}></input><br></br>
@@ -681,9 +677,10 @@ export class SearchBarComponent extends React.Component {
                 </form>
                 {!this.state.hide_winning_popup && this.showEndingBanner(true)}
                 {!this.state.hide_losing_popup && this.showEndingBanner(false)}
-                <form class="popup" style={{textAlign: 'left', fontSize: window.innerWidth < 750 ? '12px' : 'inherit'}} hidden={this.state.hide_rules_popup}>
-                    <button style={{float: 'right'}} onClick={(e) => this.closeRulesPopup(e)}>X</button>
-                    <p>Welcome to the Scheffle! If you already know the rules, feel free to close this window. Otherwise, they are explained below!</p>  
+                <form class="popup" id="RulesContainer" style={{textAlign: 'left', fontSize: window.innerWidth < 750 ? '12px' : 'inherit'}} hidden={this.state.hide_rules_popup}>
+                    <div class='popup_content'>
+                    <span class='button_like' style={{float: 'right'}} onClick={(e) => this.closeRulesPopup(e)}>X</span>
+                    <p style={{clear: 'both'}}>Welcome to the Scheffle! If you already know the rules, feel free to close this window. Otherwise, they are explained below!</p>  
                     <p>The objective of the game is to figure out today's golfer of the day in the least amount of guesses. Start by picking a PGA Tour Professional using the search bar.
                          Once selected, you will see your chosen player's number of career wins, number of career major championships, current World Golf Ranking, Age, 
                          Average Driving Distance, and Country of Origin. In addition, you will see the following hints to narrow your search for the correct golfer:</p>
@@ -702,6 +699,7 @@ export class SearchBarComponent extends React.Component {
                         </ul>
                         <p>You will have 8 guesses to correctly guess the golfer of the day before failing. However, try to solve the puzzle in the smallest number of guesses possible!</p>
                         <p hidden={this.state.user != ''} style={{fontWeight: 'bold'}}>Please Log In or Create an Account <button onClick={(e) => this.logIn(e)} class="link_button">HERE</button> in order to keep track of your daily guess history and average score.</p>
+                        </div>
                 </form>
             </div>   
         )
