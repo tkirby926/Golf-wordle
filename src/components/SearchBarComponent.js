@@ -381,7 +381,7 @@ export class SearchBarComponent extends React.Component {
         .then(response => response.json())
         .then((data) => {
             if (data.correct_login) {
-                this.setState({user: data.user, hide_login_popup: true, error: ''})
+                this.setState({user: data.user, hide_login_popup: true, error: '', history: [0, 0, 0, 0, 0, 0, 0, 0, 0]})
                 for (const key in sessionStorage) {
                     if (sessionStorage.hasOwnProperty(key)) {
                       sessionStorage.removeItem(key);
