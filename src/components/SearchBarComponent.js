@@ -414,6 +414,7 @@ export class SearchBarComponent extends React.Component {
         .then((data) => {
             if (data.success == 'yes') {
                 this.setState({user: e.target[0].value, hide_create_popup: true})
+                sessionStorage.setItem('user', e.target[0].value)
                 window.location.reload();
             }
         });
