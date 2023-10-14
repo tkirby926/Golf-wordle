@@ -58,7 +58,7 @@ export class SearchBarComponent extends React.Component {
     }
 
     checkNull(arr) {
-        if (arr[0] == '') {
+        if (arr[0] == '' || arr[0] == 'undefined') {
             return []
         }
         else {
