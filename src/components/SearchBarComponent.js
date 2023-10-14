@@ -695,7 +695,7 @@ export class SearchBarComponent extends React.Component {
             div_width = '98%';
         }
         return (
-            <div style={{width: div_width, position: 'relative'}}>
+            <div style={{width: div_width, position: 'relative', paddingBottom: '50px'}}>
                 <div  style={{ marginRight: '5%', width: '100%', marginTop: '5px', marginBottom: '5px'}}>
                     <div style={{display: 'flex'}}>
                         <button class="button_standard" style={{display: this.state.user == '' ? 'none' : 'initial', fontSize: '15px', marginTop: '1vh', marginLeft: '10px', float: 'left', marginRight: '2px'}} onClick={(event) => this.showDropDown(event)}> Profile </button>
