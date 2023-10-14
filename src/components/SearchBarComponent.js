@@ -6,6 +6,7 @@ import Chart from 'react-apexcharts';
 import Golfer from './img.png';
 import Check from './check.webp';
 import RedX from './Redx.webp';
+import { data } from 'browserslist';
 
 export class SearchBarComponent extends React.Component {
 
@@ -20,7 +21,6 @@ export class SearchBarComponent extends React.Component {
             hide_create_popup: true,
             user: '',
             autocomp_results: [],
-            win: false,
             error: '',
             answer: [],
             hide_winning_popup: true,
@@ -55,30 +55,122 @@ export class SearchBarComponent extends React.Component {
             this.setState({autocomp_results: []})
         }
     }
+
+    checkNull(arr) {
+        if (arr[0] == '') {
+            return []
+        }
+        else {
+            return arr;
+        }
+    }
+
+    checkDate() {
+        var today = new Date();
+        if (sessionStorage.getItem('last_update') == undefined) {
+            return false;
+        }
+        if (today.getDate() == new Date(sessionStorage.getItem('last_update')).getDate()) {
+            return true;
+        }
+        return false;
+    }
     
     componentDidMount() {
-        fetch(UserProfile.getUrl() + "/api/v1/check_user", { credentials: 'include', method: 'GET' })
-        .then((response) => {
-            if (!response.ok) throw Error(response.statusText);
-            return response.json();
-        })
-        .then((data) => {
-            var cant_guess = false;
-            if (data.no_guesses) {
-                cant_guess = true;
+        var today = new Date();
+        if (sessionStorage.getItem('user') != null && this.checkDate()) {
+            var num_guesses = parseInt(sessionStorage.getItem('num_guesses'));
+            var history = sessionStorage.getItem('history').split(',').map(Number);
+            var guess_string = sessionStorage.getItem('guesses').split(',');
+            var requests = sessionStorage.getItem('requests').split(',');
+            var friends = sessionStorage.getItem('friends').split(',');
+            var answer = sessionStorage.getItem('answer').split(',');
+            answer = this.checkNull(answer);
+            requests = this.checkNull(requests);
+            friends = this.checkNull(friends);
+            var rules_popup = sessionStorage.getItem('hide_rules_popup') == 'false' ? false : true;
+            var cant_guess = sessionStorage.getItem('cant_guess') == 'false' ? false : true;
+            if (answer.length > 1) {
+                answer[0] = parseInt(answer[0])
+                answer[3] = parseInt(answer[3])
+                answer[4] = parseInt(answer[4])
+                answer[5] = parseInt(answer[5])
+                answer[6] = parseInt(answer[6])
+                answer[7] = parseInt(answer[7])
             }
-            this.setState({cant_guess: cant_guess, guesses: data.guesses, history: data.history, 
-                user: data.user == "null" ? '' : data.user, 
-                answer: cant_guess ? data.chosenplayer : [],
-                friends: data.friends,
-                requests: data.requests,
-                num_guesses: data.guesses.length,
-                hide_rules_popup: data.user == "null" ? false : true,
-                series: [{
+            var friends_readable = []
+            var guesses_readable = []
+            if (guess_string.length != 1) {
+                for (let i = 0; i < guess_string.length / 16; i += 1) {
+                    const chunk = []
+                    for (let j = 0; j < 16; j++) {
+                        if (j == 0 || j == 3 || j == 4 || j == 5 || j == 6 || j == 7) {
+                            guess_string[i*16 + j] = parseInt(guess_string[i*16 + j])
+                        }
+                        chunk.push(guess_string[i*16 + j])
+                    }
+                    guesses_readable.push(chunk);
+                }
+            }
+            if (friends.length != 1) {
+                for (let i = 0; i < friends.length / 2; i += 1) {
+                    const chunk = []
+                    for (let j = 0; j < 2; j++) {
+                        if (j == 1) {
+                            friends[i*2 + j] = parseInt(friends[i*2 + j])
+                        }
+                        chunk.push(friends[i*2 + j])
+                    }
+                    friends_readable.push(chunk);
+                }
+            }
+            this.setState({user: sessionStorage.getItem('user'), answer: answer,
+                           friends: friends_readable, requests: requests,
+                           num_guesses: num_guesses, hide_rules_popup: rules_popup,
+                           series: sessionStorage.getItem('series'), guesses: guesses_readable, 
+                           cant_guess: cant_guess, history: history});
+        }
+        else {
+            fetch(UserProfile.getUrl() + "/api/v1/check_user", { credentials: 'include', method: 'GET' })
+            .then((response) => {
+                if (!response.ok) throw Error(response.statusText);
+                return response.json();
+            })
+            .then((data) => {
+                var cant_guess = false;
+                if (data.no_guesses) {
+                    cant_guess = true;
+                }
+                this.setState({cant_guess: cant_guess, guesses: data.guesses, history: data.history, 
+                    user: data.user == "null" ? '' : data.user, 
+                    answer: cant_guess ? data.chosenplayer : [],
+                    friends: data.friends,
+                    requests: data.requests,
+                    num_guesses: data.guesses.length,
+                    hide_rules_popup: data.user == "null" ? false : true,
+                    series: [{
+                        name: 'series-1',
+                        data: [data.history]
+                    }],
+                    last_check_timestamp: new Date()
+                })
+                sessionStorage.setItem('cant_guess', cant_guess)
+                sessionStorage.setItem('guesses', data.guesses)
+                sessionStorage.setItem('history', data.history)
+                sessionStorage.setItem('user', data.user);
+                sessionStorage.setItem('answer', cant_guess ? data.chosenplayer : []);
+                sessionStorage.setItem('friends', data.friends)
+                sessionStorage.setItem('requests', data.requests)
+                sessionStorage.setItem('num_guesses', data.guesses.length)
+                sessionStorage.setItem('hide_rules_popup', data.user == "null" ? false : true)
+                sessionStorage.setItem('last_update', new Date())
+                sessionStorage.setItem('series', [{
                     name: 'series-1',
                     data: [data.history]
-                    }]})
-        })
+                }])
+            })
+                
+        }
     }
 
     returnGuess(index, wrong_ans) {
@@ -199,6 +291,9 @@ export class SearchBarComponent extends React.Component {
 
     acceptGuess(e, guessid) {
         e.preventDefault();
+        if (!this.checkDate()) {
+            this.forceUpdate();
+        }
         fetch(UserProfile.getUrl() + "/api/v1/check_guess/" + guessid, { credentials: 'include', method: 'GET' })
         .then((response) => {
             if (!response.ok) throw Error(response.statusText);
@@ -207,23 +302,38 @@ export class SearchBarComponent extends React.Component {
         .then((data) => {
             var x = this.state.guesses;
             x.push(data.guess_data)
+            var num_guess = x.length;
+            if (data.num_guesses != undefined) {
+                num_guess = data.num_guesses;
+            }
             document.getElementById('search').value = '';
             if (data.no_guesses) {
                 this.setState({cant_guess: true, autocomp_results: []})
+                sessionStorage.setItem('cant_guess', true);
             }
             else if (data.guess_data[9] == 's') {
                 if (this.state.user != '') {
                     this.state.history[data.numguesses - 1]++;
+                    sessionStorage.setItem('history', this.state.history);
                 }
-                this.setState({autocomp_results: [], num_guesses: data.numguesses, guesses: x, cant_guess: true, win: true, answer: data.guess_data.slice(0, 9), hide_winning_popup: false})
+                this.setState({autocomp_results: [], num_guesses: num_guess, guesses: x, cant_guess: true, answer: data.guess_data.slice(0, 9), hide_winning_popup: false})
+                sessionStorage.setItem('guesses', x);
+                sessionStorage.setItem('num_guesses', num_guess);
+                sessionStorage.setItem('cant_guess', true);
+                sessionStorage.setItem('answer', data.guess_data.slice(0, 9));
             }
             else {
-                this.setState({guesses: x, win: data.success, num_guesses: data.numguesses, autocomp_results: []})
+                this.setState({guesses: x, num_guesses: num_guess, autocomp_results: []})
+                sessionStorage.setItem('guesses', x);
+                sessionStorage.setItem('num_guesses', num_guess);
                 if (data.numguesses >= 8) {
                     if (this.state.history.length > 0) {
                         this.state.history[this.state.history.length - 1]++;
+                        sessionStorage.setItem('history', this.state.history);
                     }
                     this.setState({cant_guess: true, answer: data.chosen_player, hide_losing_popup: false, hide_winning_popup: true})
+                    sessionStorage.setItem('cant_guess', true);
+                    sessionStorage.setItem('answer', data.chosen_player);
                 }
             }
         })
@@ -271,6 +381,11 @@ export class SearchBarComponent extends React.Component {
         .then((data) => {
             if (data.correct_login) {
                 this.setState({user: data.user, hide_login_popup: true, error: ''})
+                for (const key in sessionStorage) {
+                    if (sessionStorage.hasOwnProperty(key)) {
+                      sessionStorage.removeItem(key);
+                    }
+                  }
                 window.location.reload();
             }
             else {
@@ -311,6 +426,11 @@ export class SearchBarComponent extends React.Component {
         .then((data) => {
             if (data.user === "") {
                 this.setState({user: '', guesses: [], num_guesses: 0, hide_login_popup: false})
+                for (const key in sessionStorage) {
+                    if (sessionStorage.hasOwnProperty(key)) {
+                      sessionStorage.removeItem(key);
+                    }
+                }
                 this.forceUpdate();
             }
             else {
@@ -491,6 +611,7 @@ export class SearchBarComponent extends React.Component {
                 var arr = this.state.requests;
                 arr.splice(index, 1);
                 this.setState({requests: arr})
+                sessionStorage.setItem('requests', arr)
             }
         });
     }
@@ -503,6 +624,7 @@ export class SearchBarComponent extends React.Component {
                 var arr = this.state.requests;
                 arr.splice(index, 1);
                 this.setState({requests: arr})
+                sessionStorage.setItem('requests', arr)
             }
         });
     }
