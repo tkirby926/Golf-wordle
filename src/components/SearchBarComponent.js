@@ -40,7 +40,7 @@ export class SearchBarComponent extends React.Component {
     autoComp(e) {
         e.preventDefault();
         var currentHost = window.location.origin;
-        console.log(currentHost)
+        console.log(UserProfile.getUrl() + "/api/v1/autocomp/" + document.getElementById('search').value)
         if (document.getElementById('search').value != '') {
             fetch(UserProfile.getUrl() + "/api/v1/autocomp/" + document.getElementById('search').value, { credentials: 'include', method: 'GET' })
             .then((response) => {

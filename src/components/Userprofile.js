@@ -1,6 +1,6 @@
 var  UserProfile = (function() {
     function getUrl() {
-        return "db.scheffle.com"
+        return "https://db.scheffle.com"
     }
 
     return {
