@@ -7,6 +7,7 @@ import Golfer from './img.png';
 import Check from './check.webp';
 import RedX from './Redx.webp';
 import { data } from 'browserslist';
+import { toHaveDisplayValue } from '@testing-library/jest-dom/matchers';
 
 export class SearchBarComponent extends React.Component {
 
@@ -67,6 +68,8 @@ export class SearchBarComponent extends React.Component {
 
     checkDate() {
         var today = new Date();
+        const nyTimeZoneOffset = -5 * 60;
+        today.setMinutes(today.getMinutes() + nyTimeZoneOffset);
         if (sessionStorage.getItem('last_update') == undefined) {
             return false;
         }
@@ -77,7 +80,6 @@ export class SearchBarComponent extends React.Component {
     }
     
     componentDidMount() {
-        var today = new Date();
         if (sessionStorage.getItem('user') != null && this.checkDate()) {
             var num_guesses = parseInt(sessionStorage.getItem('num_guesses'));
             var history = sessionStorage.getItem('history').split(',').map(Number);
@@ -163,7 +165,10 @@ export class SearchBarComponent extends React.Component {
                 sessionStorage.setItem('requests', data.requests)
                 sessionStorage.setItem('num_guesses', data.guesses.length)
                 sessionStorage.setItem('hide_rules_popup', data.user == "null" ? false : true)
-                sessionStorage.setItem('last_update', new Date())
+                var today = new Date()
+                const nyTimeZoneOffset = -5 * 60;
+                today.setMinutes(today.getMinutes() + nyTimeZoneOffset);
+                sessionStorage.setItem('last_update', today);
                 sessionStorage.setItem('series', [{
                     name: 'series-1',
                     data: [data.history]
