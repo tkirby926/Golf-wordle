@@ -68,8 +68,6 @@ export class SearchBarComponent extends React.Component {
 
     checkDate() {
         var today = new Date();
-        const nyTimeZoneOffset = -5 * 60;
-        today.setMinutes(today.getMinutes() + nyTimeZoneOffset);
         if (sessionStorage.getItem('last_update') == undefined) {
             return false;
         }
@@ -165,9 +163,7 @@ export class SearchBarComponent extends React.Component {
                 sessionStorage.setItem('requests', data.requests)
                 sessionStorage.setItem('num_guesses', data.guesses.length)
                 sessionStorage.setItem('hide_rules_popup', data.user == "null" ? false : true)
-                var today = new Date()
-                const nyTimeZoneOffset = -5 * 60;
-                today.setMinutes(today.getMinutes() + nyTimeZoneOffset);
+                var today = new Date();
                 sessionStorage.setItem('last_update', today);
                 sessionStorage.setItem('series', [{
                     name: 'series-1',
