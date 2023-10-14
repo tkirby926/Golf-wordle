@@ -314,7 +314,7 @@ export class SearchBarComponent extends React.Component {
             }
             else if (data.guess_data[9] == 's') {
                 if (this.state.user != '') {
-                    this.state.history[data.numguesses - 1]++;
+                    this.state.history[num_guess - 1]++;
                     sessionStorage.setItem('history', this.state.history);
                 }
                 this.setState({autocomp_results: [], num_guesses: num_guess, guesses: x, cant_guess: true, answer: data.guess_data.slice(0, 9), hide_winning_popup: false})
