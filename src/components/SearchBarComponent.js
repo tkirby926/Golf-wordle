@@ -381,12 +381,12 @@ export class SearchBarComponent extends React.Component {
         .then(response => response.json())
         .then((data) => {
             if (data.correct_login) {
-                this.setState({user: data.user, hide_login_popup: true, error: '', history: [0, 0, 0, 0, 0, 0, 0, 0, 0]})
+                this.setState({user: data.user, hide_login_popup: true, error: ''})
                 for (const key in sessionStorage) {
                     if (sessionStorage.hasOwnProperty(key)) {
                       sessionStorage.removeItem(key);
                     }
-                  }
+                }
                 window.location.reload();
             }
             else {
@@ -415,7 +415,11 @@ export class SearchBarComponent extends React.Component {
         .then((data) => {
             if (data.success == 'yes') {
                 this.setState({user: e.target[0].value, hide_create_popup: true})
-                sessionStorage.setItem('user', e.target[0].value)
+                for (const key in sessionStorage) {
+                    if (sessionStorage.hasOwnProperty(key)) {
+                      sessionStorage.removeItem(key);
+                    }
+                }
                 window.location.reload();
             }
         });
