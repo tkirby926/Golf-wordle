@@ -616,8 +616,11 @@ export class SearchBarComponent extends React.Component {
             if (data.status === "success") {
                 var arr = this.state.requests;
                 arr.splice(index, 1);
-                this.setState({requests: arr})
+                var arr2 = this.state.friends;
+                arr2.push(data.friend);
+                this.setState({requests: arr, friends: arr2})
                 sessionStorage.setItem('requests', arr)
+                sessionStorage.setItem('friends', arr2)
             }
         });
     }
