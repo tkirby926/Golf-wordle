@@ -617,7 +617,7 @@ export class SearchBarComponent extends React.Component {
                 var arr = this.state.requests;
                 arr.splice(index, 1);
                 var arr2 = this.state.friends;
-                arr2.push(data.friend);
+                arr2.push(data.friend_info);
                 this.setState({requests: arr, friends: arr2})
                 sessionStorage.setItem('requests', arr)
                 sessionStorage.setItem('friends', arr2)
