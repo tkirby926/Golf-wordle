@@ -651,7 +651,7 @@ export class SearchBarComponent extends React.Component {
         return (
             <div>
                 <form style={{height: '30px'}} onSubmit={(e) => this.sendRequest(e)}>
-                    <input class="input1" onKeyUp={(e) => this.resetSearchState(e)} type="text" id='search1' name="search" placeholder="Add Friend"/>
+                    <input class="input1" onKeyUp={(e) => this.resetSearchState(e)} type="text" id='search1' name="search" placeholder="Add Friend By Username"/>
                     <button class="button_standard" type='submit' style={{width: '20%', height: '30px', marginRight: '10px', fontSize: font_size, minWidth: '0', float: 'right', padding: '2px'}}>{button_message}</button>
                 </form>
                 <div style={{clear: 'both'}} hidden={this.state.requests.length == 0}>
@@ -660,8 +660,8 @@ export class SearchBarComponent extends React.Component {
                         return (
                             <div class="req">
                                 <p style={{width: '60%', float: 'left', margin: '0'}}>{req}</p>
-                                <img onClick={(e) => this.acceptFriend(e, index)} src={Check} style={{width: '5%', float: 'left'}}></img>
-                                <img onClick={(e) => this.rejectFriend(e, index)} src={RedX} style={{marginLeft: '5%', width: '5%', float: 'left'}}></img>
+                                <img onClick={(e) => this.acceptFriend(e, index)} src={Check} style={{width: '5%', float: 'left', cursor: 'pointer'}}></img>
+                                <img onClick={(e) => this.rejectFriend(e, index)} src={RedX} style={{marginLeft: '5%', width: '5%', float: 'left', cursor: 'pointer'}}></img>
                             </div>
                         )
                     })}
