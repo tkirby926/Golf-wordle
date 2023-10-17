@@ -303,8 +303,8 @@ export class SearchBarComponent extends React.Component {
             var x = this.state.guesses;
             x.push(data.guess_data)
             var num_guess = x.length;
-            if (data.num_guesses != undefined) {
-                num_guess = data.num_guesses;
+            if (data.numguesses != undefined) {
+                num_guess = data.numguesses;
                 if (num_guess != x.length) {
                     this.resetStorage();
                 }
