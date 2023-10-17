@@ -304,7 +304,7 @@
     border: 1px solid black;
     padding: 2%;
     white-space: nowrap;
-    font-family: 'Garamond';
+    font-family: 'Nexa', sans-serif;
     /* font-size: 18px; */
     vertical-align: middle;
     animation: fadeInAnimation ease 3s;

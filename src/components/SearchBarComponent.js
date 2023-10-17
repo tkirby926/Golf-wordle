@@ -40,8 +40,6 @@ export class SearchBarComponent extends React.Component {
 
     autoComp(e) {
         e.preventDefault();
-        var currentHost = window.location.origin;
-        console.log(UserProfile.getUrl() + "/api/v1/autocomp/" + document.getElementById('search').value)
         if (document.getElementById('search').value != '') {
             fetch(UserProfile.getUrl() + "/api/v1/autocomp/" + document.getElementById('search').value, { credentials: 'include', method: 'GET' })
             .then((response) => {
@@ -588,7 +586,6 @@ export class SearchBarComponent extends React.Component {
 
     sendRequest(e) {
         e.preventDefault();
-        console.log(e.target[0].value)
         var formdata = new FormData();
         formdata.append("user", e.target[0].value);
         const requestOptions = {
