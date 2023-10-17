@@ -342,7 +342,7 @@ export class SearchBarComponent extends React.Component {
 
     logIn(e) {
         e.preventDefault();
-        this.setState({hide_login_popup: false, hide_create_popup: true, hide_rules_popup: true, hide_winning_popup: true})
+        this.setState({hide_login_popup: false, hide_create_popup: true, hide_rules_popup: true, hide_winning_popup: true, error: ''})
     }
 
     closeLoginPopup(e) {
@@ -421,6 +421,9 @@ export class SearchBarComponent extends React.Component {
                     }
                 }
                 window.location.reload();
+            }
+            else {
+                this.setState({error: data.error})
             }
         });
     }
