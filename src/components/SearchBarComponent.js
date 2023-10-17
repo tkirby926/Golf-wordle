@@ -80,6 +80,7 @@ export class SearchBarComponent extends React.Component {
     componentDidMount() {
         if (sessionStorage.getItem('user') != null && this.checkDate()) {
             var num_guesses = parseInt(sessionStorage.getItem('num_guesses'));
+            var user = sessionStorage.getItem('user') == 'null' ? '' : sessionStorage.getItem('user');
             var history = sessionStorage.getItem('history').split(',').map(Number);
             var guess_string = sessionStorage.getItem('guesses').split(',');
             var requests = sessionStorage.getItem('requests').split(',');
@@ -124,7 +125,7 @@ export class SearchBarComponent extends React.Component {
                     friends_readable.push(chunk);
                 }
             }
-            this.setState({user: sessionStorage.getItem('user'), answer: answer,
+            this.setState({user: user, answer: answer,
                            friends: friends_readable, requests: requests,
                            num_guesses: num_guesses, hide_rules_popup: rules_popup,
                            series: sessionStorage.getItem('series'), guesses: guesses_readable, 
