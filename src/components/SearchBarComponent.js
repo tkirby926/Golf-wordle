@@ -305,6 +305,9 @@ export class SearchBarComponent extends React.Component {
             var num_guess = x.length;
             if (data.num_guesses != undefined) {
                 num_guess = data.num_guesses;
+                if (num_guess != x.length) {
+                    this.resetStorage();
+                }
             }
             document.getElementById('search').value = '';
             if (data.no_guesses) {
@@ -374,6 +377,15 @@ export class SearchBarComponent extends React.Component {
         }
     }
 
+    resetStorage() {
+        for (const key in sessionStorage) {
+            if (sessionStorage.hasOwnProperty(key)) {
+              sessionStorage.removeItem(key);
+            }
+        }
+        window.location.reload();
+    }
+
     submitLogin(e) {
         e.preventDefault();
         fetch(UserProfile.getUrl() + '/login/' + e.target[0].value + '/' + e.target[1].value, { credentials: 'include', method: 'GET' })
@@ -381,12 +393,7 @@ export class SearchBarComponent extends React.Component {
         .then((data) => {
             if (data.correct_login) {
                 this.setState({user: data.user, hide_login_popup: true, error: ''})
-                for (const key in sessionStorage) {
-                    if (sessionStorage.hasOwnProperty(key)) {
-                      sessionStorage.removeItem(key);
-                    }
-                }
-                window.location.reload();
+                this.resetStorage();
             }
             else {
                 this.setState({error: "Login Failed"})
@@ -414,12 +421,7 @@ export class SearchBarComponent extends React.Component {
         .then((data) => {
             if (data.success == 'yes') {
                 this.setState({user: e.target[0].value, hide_create_popup: true})
-                for (const key in sessionStorage) {
-                    if (sessionStorage.hasOwnProperty(key)) {
-                      sessionStorage.removeItem(key);
-                    }
-                }
-                window.location.reload();
+                this.resetStorage();
             }
             else {
                 this.setState({error: data.error})
@@ -434,12 +436,7 @@ export class SearchBarComponent extends React.Component {
         .then((data) => {
             if (data.user === "") {
                 this.setState({user: '', guesses: [], num_guesses: 0, hide_login_popup: false})
-                for (const key in sessionStorage) {
-                    if (sessionStorage.hasOwnProperty(key)) {
-                      sessionStorage.removeItem(key);
-                    }
-                }
-                this.forceUpdate();
+                this.resetStorage();
             }
             else {
                 this.setState({error: data.error})
