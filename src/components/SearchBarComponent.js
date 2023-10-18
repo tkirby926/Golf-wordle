@@ -86,7 +86,7 @@ export class SearchBarComponent extends React.Component {
             var requests = sessionStorage.getItem('requests').split(',');
             var friends = sessionStorage.getItem('friends').split(',');
             var answer = sessionStorage.getItem('answer').split(',');
-            var hint_req = sessionStorage.getItem('hint_req');
+            var hint_req = sessionStorage.getItem('hint_requested') == 'true' ? true : false;
             var hint = sessionStorage.getItem('hint');
             answer = this.checkNull(answer);
             requests = this.checkNull(requests);
@@ -152,6 +152,8 @@ export class SearchBarComponent extends React.Component {
                     friends: data.friends,
                     requests: data.requests,
                     num_guesses: data.guesses.length,
+                    hint_requested: data.hint != '' ? true : false,
+                    hint: data.hint,
                     hide_rules_popup: data.user == "null" ? false : true,
                     series: [{
                         name: 'series-1',
@@ -170,6 +172,8 @@ export class SearchBarComponent extends React.Component {
                 sessionStorage.setItem('hide_rules_popup', data.user == "null" ? false : true)
                 var today = new Date();
                 sessionStorage.setItem('last_update', today);
+                sessionStorage.setItem('hint_requested', data.hint != '' ? true : false);
+                sessionStorage.setItem('hint', data.hint);
                 sessionStorage.setItem('series', [{
                     name: 'series-1',
                     data: [data.history]
