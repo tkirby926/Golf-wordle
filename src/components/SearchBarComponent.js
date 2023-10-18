@@ -787,7 +787,7 @@ export class SearchBarComponent extends React.Component {
                     <p>Show Hint</p>
                 </div>
                 <div class="popup" hidden={this.state.hide_hint_confirmation}>
-                    <p>Are you sure you want to see the hint? It will show you the golfer of the day's last event that they won.</p>
+                    <p>Are you sure you want to see the hint? It will show the last event won by the golfer of the day.</p>
                     <div style={{width: '100%'}}>
                         <div style={{margin: '0 auto', display: 'inline-block'}}>
                             <button class="button_standard" style={{float: 'left'}} onClick={(e) => this.showHint(e)}>Yes</button>
