@@ -653,7 +653,7 @@ export class SearchBarComponent extends React.Component {
         .then(response => response.json())
         .then((data) => {
             if (data.status === "success") {
-                this.setState({hint_requested: true, hint: data.hint})
+                this.setState({hint_requested: true, hint: data.hint, hide_hint_confirmation: true})
                 sessionStorage.setItem('hint', data.hint);
                 sessionStorage.setItem('hint_requested', true);
             }
@@ -788,8 +788,8 @@ export class SearchBarComponent extends React.Component {
                 </div>
                 <div class="popup" hidden={this.state.hide_hint_confirmation}>
                     <p>Are you sure you want to see the hint? It will show you the golfer of the day's last event that they won.</p>
-                    <button class="button_standard" onClick={(e) => this.showHint(e)}>Yes</button>
-                    <button class="button_standard" onClick={(e) => this.clsoeHintConfirmation(e)}>No</button>
+                    <button class="button_standard" style={{float: 'left'}} onClick={(e) => this.showHint(e)}>Yes</button>
+                    <button class="button_standard" style={{float: 'left', marginLeft: '10px'}} onClick={(e) => this.clsoeHintConfirmation(e)}>No</button>
                 </div>
                 <div class="big_form_green" hidden={!this.state.hint_requested}>
                     <p>Last Tournament Won: {this.state.hint}</p>
