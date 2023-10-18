@@ -788,8 +788,12 @@ export class SearchBarComponent extends React.Component {
                 </div>
                 <div class="popup" hidden={this.state.hide_hint_confirmation}>
                     <p>Are you sure you want to see the hint? It will show you the golfer of the day's last event that they won.</p>
-                    <button class="button_standard" style={{float: 'left'}} onClick={(e) => this.showHint(e)}>Yes</button>
-                    <button class="button_standard" style={{float: 'left', marginLeft: '10px'}} onClick={(e) => this.clsoeHintConfirmation(e)}>No</button>
+                    <div style={{width: '100%'}}>
+                        <div style={{margin: '0 auto', display: 'inline-block'}}>
+                            <button class="button_standard" style={{float: 'left'}} onClick={(e) => this.showHint(e)}>Yes</button>
+                            <button class="button_standard" style={{float: 'left', marginLeft: '10px'}} onClick={(e) => this.clsoeHintConfirmation(e)}>No</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="big_form_green" hidden={!this.state.hint_requested}>
                     <p>Last Tournament Won: {this.state.hint}</p>
