@@ -771,7 +771,7 @@ export class SearchBarComponent extends React.Component {
                         })}</div>
                     </form>
                 </div>
-                <div class="big_form_white" style={{cursor: 'pointer'}} onClick={(e) => this.showHint(e)}>
+                <div class="big_form_green" style={{cursor: 'pointer'}} onClick={(e) => this.showHint(e)}>
                     <p>Show Hint</p>
                 </div>
                 <div style={{width: '100%', maxWidth: '600px', margin: '0 auto', marginTop: '15px'}}>
