@@ -36,7 +36,8 @@ export class SearchBarComponent extends React.Component {
             friends: [],
             requests: [],
             hint_requested: false,
-            hint: ''
+            hint: '',
+            hide_hint_confirmation: true,
         }
     }
 
@@ -647,6 +648,7 @@ export class SearchBarComponent extends React.Component {
     }
 
     showHint(e) {
+        e.preventDefault();
         fetch(UserProfile.getUrl() + '/api/v1/show_hint', { credentials: 'include', method: 'GET' })
         .then(response => response.json())
         .then((data) => {
@@ -709,9 +711,19 @@ export class SearchBarComponent extends React.Component {
         )
     }
 
+    showHintConfirmation(e) {
+        e.preventDefault();
+        this.setState({hide_hint_confirmation: false, hide_login_popup: true, hide_losing_popup: true, hide_winning_popup: true, hide_create_popup: true})
+    }
+
     showRulesPopup(e) {
         e.preventDefault();
         this.setState({hide_rules_popup: !this.state.hide_rules_popup, hide_login_popup: true, hide_create_popup: true, hide_dropdown: true})
+    }
+
+    clsoeHintConfirmation(e) {
+        e.preventDefault();
+        this.setState({hide_hint_confirmation: true})
     }
 
     render() {
@@ -771,8 +783,13 @@ export class SearchBarComponent extends React.Component {
                         })}</div>
                     </form>
                 </div>
-                <div class="big_form_green" style={{cursor: 'pointer'}} onClick={(e) => this.showHint(e)} hidden={this.state.hint_requested}>
+                <div class="big_form_green" style={{cursor: 'pointer'}} onClick={(e) => this.showHintConfirmation(e)} hidden={this.state.hint_requested}>
                     <p>Show Hint</p>
+                </div>
+                <div class="popup" hidden={this.state.hide_hint_confirmation}>
+                    <p>Are you sure you want to see the hint? It will show you the golfer of the day's last event that they won.</p>
+                    <button class="button_standard" onClick={(e) => this.showHint(e)}>Yes</button>
+                    <button class="button_standard" onClick={(e) => this.clsoeHintConfirmation(e)}>No</button>
                 </div>
                 <div class="big_form_green" hidden={!this.state.hint_requested}>
                     <p>Last Tournament Won: {this.state.hint}</p>
