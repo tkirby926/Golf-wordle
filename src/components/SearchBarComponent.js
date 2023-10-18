@@ -34,7 +34,9 @@ export class SearchBarComponent extends React.Component {
             hide_rules_popup: true,
             search_status: 'r',
             friends: [],
-            requests: []
+            requests: [],
+            hint_requested: false,
+            hint: ''
         }
     }
 
@@ -84,6 +86,8 @@ export class SearchBarComponent extends React.Component {
             var requests = sessionStorage.getItem('requests').split(',');
             var friends = sessionStorage.getItem('friends').split(',');
             var answer = sessionStorage.getItem('answer').split(',');
+            var hint_req = sessionStorage.getItem('hint_req');
+            var hint = sessionStorage.getItem('hint');
             answer = this.checkNull(answer);
             requests = this.checkNull(requests);
             friends = this.checkNull(friends);
@@ -127,7 +131,8 @@ export class SearchBarComponent extends React.Component {
                            friends: friends_readable, requests: requests,
                            num_guesses: num_guesses, hide_rules_popup: rules_popup,
                            series: sessionStorage.getItem('series'), guesses: guesses_readable, 
-                           cant_guess: cant_guess, history: history});
+                           cant_guess: cant_guess, history: history, hint_requested: hint_req,
+                           hint: hint});
         }
         else {
             fetch(UserProfile.getUrl() + "/api/v1/check_user", { credentials: 'include', method: 'GET' })
@@ -140,6 +145,7 @@ export class SearchBarComponent extends React.Component {
                 if (data.no_guesses) {
                     cant_guess = true;
                 }
+
                 this.setState({cant_guess: cant_guess, guesses: data.guesses, history: data.history, 
                     user: data.user == "null" ? '' : data.user, 
                     answer: cant_guess ? data.chosenplayer : [],
@@ -636,6 +642,18 @@ export class SearchBarComponent extends React.Component {
         });
     }
 
+    showHint(e) {
+        fetch(UserProfile.getUrl() + '/api/v1/show_hint', { credentials: 'include', method: 'GET' })
+        .then(response => response.json())
+        .then((data) => {
+            if (data.status === "success") {
+                this.setState({hint_requested: true, hint: data.hint})
+                sessionStorage.setItem('hint', data.hint);
+                sessionStorage.setItem('hint_requested', true);
+            }
+        });
+    }
+
     showFriends() {
         var button_message = 'Submit'
         var font_size = 'initial';
@@ -748,6 +766,9 @@ export class SearchBarComponent extends React.Component {
                                 )
                         })}</div>
                     </form>
+                </div>
+                <div class="big_form_white" style={{cursor: 'pointer'}} onClick={(e) => this.showHint(e)}>
+                    <p>Show Hint</p>
                 </div>
                 <div style={{width: '100%', maxWidth: '600px', margin: '0 auto', marginTop: '15px'}}>
                     <table cellSpacing='5px' height='50px' style={{tableLayout: 'fixed', margin: '0 auto', backgroundColor: 'white', borderRadius: '25px', width: window.innerWidth < 450 ? '100%' : '95%'}}>
