@@ -771,8 +771,11 @@ export class SearchBarComponent extends React.Component {
                         })}</div>
                     </form>
                 </div>
-                <div class="big_form_green" style={{cursor: 'pointer'}} onClick={(e) => this.showHint(e)}>
+                <div class="big_form_green" style={{cursor: 'pointer'}} onClick={(e) => this.showHint(e)} hidden={this.state.hint_requested}>
                     <p>Show Hint</p>
+                </div>
+                <div class="big_form_green" hidden={!this.state.hint_requested}>
+                    <p>Last Tournament Won: {this.state.hint}</p>
                 </div>
                 <div style={{width: '100%', maxWidth: '600px', margin: '0 auto', marginTop: '15px'}}>
                     <table cellSpacing='5px' height='50px' style={{tableLayout: 'fixed', margin: '0 auto', backgroundColor: 'white', borderRadius: '25px', width: window.innerWidth < 450 ? '100%' : '95%'}}>
