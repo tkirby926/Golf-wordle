@@ -783,9 +783,9 @@ export class SearchBarComponent extends React.Component {
                         })}</div>
                     </form>
                 </div>
-                <div class="big_form_green" style={{cursor: 'pointer'}} onClick={(e) => this.showHintConfirmation(e)} hidden={this.state.hint_requested}>
+                <button class="big_form_green" style={{cursor: 'pointer'}} onClick={(e) => this.showHintConfirmation(e)} hidden={this.state.hint_requested} disabled={this.state.cant_guess}>
                     <p>Show Hint</p>
-                </div>
+                </button>
                 <div class="popup" hidden={this.state.hide_hint_confirmation}>
                     <p>Are you sure you want to see the hint? It will show the last event won by the golfer of the day.</p>
                     <div style={{width: '100%'}}>
