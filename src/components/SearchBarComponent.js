@@ -3,7 +3,7 @@ import React from 'react';
 import UserProfile from './Userprofile';
 import Scheffle from './Scheffle_logo.jpeg';
 import Chart from 'react-apexcharts';
-import Golfer from './img.png';
+import Golfer from './img.jpeg';
 import Check from './check.webp';
 import RedX from './Redx.webp';
 import { data } from 'browserslist';
