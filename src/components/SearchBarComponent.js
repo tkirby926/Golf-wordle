@@ -862,7 +862,7 @@ export class SearchBarComponent extends React.Component {
                 </form>
                 {!this.state.hide_winning_popup && this.showEndingBanner(true)}
                 {!this.state.hide_losing_popup && this.showEndingBanner(false)}
-                <form class="popup" id="RulesContainer" style={{textAlign: 'left', fontSize: window.innerWidth < 750 ? '12px' : '14px'}} hidden={this.state.hide_rules_popup}>
+                <form class="popup" id="RulesContainer" style={{textAlign: 'left', fontSize: window.innerWidth < 750 ? '11px' : '14px'}} hidden={this.state.hide_rules_popup}>
                     <div class='popup_content'>
                     <span class='button_like' style={{float: 'right'}} onClick={(e) => this.closeRulesPopup(e)}>X</span>
                     <p style={{clear: 'both'}}>Welcome to the Scheffle! If you already know the rules, feel free to close this window. Otherwise, they are explained below!</p>  
@@ -880,6 +880,8 @@ export class SearchBarComponent extends React.Component {
                                   golfer (this does not apply for the Country of Origin category).
                              </li>
                              <li>If all fields are marked in green for your guessed golfer, that means you correctly guessed the golfer of the day!
+                             </li>
+                             <li style={{fontWeight: 'bold'}}>If you get stuck, you can use the "Show Hint" Button to see the last PGA tournament won by the golfer of the day.
                              </li>
                         </ul>
                         <p>You will have 8 guesses to correctly guess the golfer of the day before failing. However, try to solve the puzzle in the smallest number of guesses possible!</p>
