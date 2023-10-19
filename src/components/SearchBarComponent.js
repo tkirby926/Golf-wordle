@@ -739,6 +739,8 @@ export class SearchBarComponent extends React.Component {
         }
         return (
             <div style={{width: div_width, position: 'relative', paddingBottom: '50px'}}>
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6567831601079042"
+     crossorigin="anonymous"></script>
                 {/* <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6567831601079042"
                 crossorigin="anonymous"></script> */}
                 <div  style={{ marginRight: '5%', width: '100%', marginTop: '5px', marginBottom: '5px'}}>
