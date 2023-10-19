@@ -692,7 +692,7 @@ export class SearchBarComponent extends React.Component {
                 <p>Friends:</p>
                 <div class="req_header">
                     <p style={{width: '60%', float: 'left', margin: '0'}}>username</p>
-                    <p style={{width: '20%', float: 'left', margin: '0'}}>Guess #</p>
+                    <p style={{width: '25%', float: 'left', margin: '0'}}>Guess #</p>
                 </div>
                 {this.state.friends.map((friend, index) => {
                     var num = friend[1];
