@@ -197,6 +197,15 @@
     display: inline-block;
 }
 
+.req_header {
+    display: flex;
+    width: 90%;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 2px;
+    display: inline-block;
+}
+
 .input1 {
     height: 30px;
     width: 70%;
