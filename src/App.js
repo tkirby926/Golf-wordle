@@ -8,6 +8,10 @@ import React, { useState } from 'react';
 function App() {
   return (
     <div className="App" style={{backgroundImage: "url(" + HomePhoto + ")"}}>
+      <head>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6567831601079042"
+     crossorigin="anonymous"></script>
+      </head>
       <Router>
         <Routes>
           <Route path='/' element={<HomeComponent/>} />
