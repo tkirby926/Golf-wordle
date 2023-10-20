@@ -12,6 +12,7 @@ export class HomeComponent extends React.Component {
 
     render() {
         return (
+            <html>
             <div style={{width: '100%'}}>
                 <head>
                 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6567831601079042"
@@ -24,6 +25,7 @@ export class HomeComponent extends React.Component {
                 </body>
                 {/* <FooterComponent /> */}
             </div>
+            </html>
         )
     }
 
