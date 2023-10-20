@@ -246,7 +246,7 @@
 .image {
     max-width: 100%; /* Ensure the image doesn't exceed its parent's width */
     max-height: 100%; /* Ensure the image doesn't exceed its parent's height */
-    width: 60%; /* Set the image's width to 50% of its parent's width */
+    width: 55%; /* Set the image's width to 50% of its parent's width */
     height: auto; /* Maintain the image's aspect ratio */
     position: absolute; /* Position the image within the container */
     top: 50%; /* Center the image vertically */

@@ -282,7 +282,7 @@ export class SearchBarComponent extends React.Component {
                             <div style={{display: 'table-cell', width: '10%', height: '35px'}}>
                                 <div class={type}  style={{alignItems: 'center', height: '100%', marginTop: '0', marginBottom: '0', textAlign: 'center', display: 'inline-block', width: '95%', justifyContent: 'center', alignContent: 'center'}}>
                                 <div style={{width: '100%', lineHeight: '0px', display: 'flex', justifyContent: 'center', alignContent: 'center', height: '100%', fontSize: '110%', position: 'relative'}}>
-                                    <img style={{border: '1.5px solid black', borderRadius: '4px', display: 'block'}} class="image" src={Am_flag}></img>
+                                    <img style={{border: '1.5px solid black', borderRadius: '8px', display: 'block'}} class="image" src={Am_flag}></img>
                                 </div>
                                 </div>
                             </div>
