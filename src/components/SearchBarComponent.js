@@ -695,8 +695,10 @@ export class SearchBarComponent extends React.Component {
                     <p style={{width: '60%', float: 'left', margin: '0'}}>username</p>
                     <p style={{width: '25%', float: 'left', margin: '0'}}>Guess #</p>
                 </div>
-                <div style={{fontWeight: 'bold', textAlign: 'center'}} hidden={this.state.friends.length != 0}>
-                    <p>You don't have any friends yet. Use the search bar to find friends by their username.</p>
+                <div style={{width: '100%'}}>
+                    <div style={{fontWeight: 'bold', textAlign: 'center', margin: '0 auto', width: '85%'}} hidden={this.state.friends.length != 0}>
+                        <p>You don't have any friends yet. Use the search bar to find friends by their username.</p>
+                    </div>
                 </div>
                 {this.state.friends.map((friend, index) => {
                     var num = friend[1];
