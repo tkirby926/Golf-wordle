@@ -199,9 +199,11 @@ export class SearchBarComponent extends React.Component {
                     {guess.slice(3, 9).map((attr, index1) => {
                         var type = 'first2';
                         var arrow = '';
+                        var height = '100%';
                         var suffix = '';
                         if (!wrong_ans) {
                             if (index1 == 5) { 
+                                height = '87%';
                                 if (this.state.guesses[index][index1 + 10] != 's') {
                                     type = "third2";
                                 }
@@ -266,7 +268,7 @@ export class SearchBarComponent extends React.Component {
                             return (   
                             <div style={{display: 'table-cell', width: '10%'}}>
                                 {/* <img src={this.state.attr[index1]} style={{width: '100%', height: '25px'}}></img> */}
-                                <div class={type}  style={{alignItems: 'center', height: '100%', marginTop: '0', marginBottom: '0', textAlign: 'center'}}>
+                                <div class={type}  style={{alignItems: 'center', height: height, marginTop: '0', marginBottom: '0', textAlign: 'center'}}>
                                     <div style={{width: '100%', lineHeight: '0px', display: 'flex', justifyContent: 'center', fontWeight: 'bold', alignContent: 'center', height: '100%', fontSize: '110%'}}>
                                     <p style={{display: 'inline'}}>{attr}<p style={{display: 'inline', fontSize: '10px'}}>{suffix}</p>{arrow}</p>
                                     </div>
