@@ -691,7 +691,7 @@ export class SearchBarComponent extends React.Component {
                 </div>
                 <div style={{clear: 'both'}}>
                 <p>Friends:</p>
-                <div class="req_header" hidden={this.state.friends.length == 0}>
+                <div class="req_header" style={{display: this.state.friends.length == 0 ? 'none' : 'flex'}}>
                     <p style={{width: '60%', float: 'left', margin: '0'}}>username</p>
                     <p style={{width: '25%', float: 'left', margin: '0'}}>Guess #</p>
                 </div>
