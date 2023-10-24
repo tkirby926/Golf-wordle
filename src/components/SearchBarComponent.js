@@ -776,9 +776,9 @@ export class SearchBarComponent extends React.Component {
                         data-ad-slot="6139463594"
                         data-ad-format="auto"
                         data-full-width-responsive="true"></ins>
-                    <script>
+                    {/* <script>
                         (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
+                    </script> */}
                 </div>
                 <div class="box">
                     <div class="big_form_white" hidden={this.state.user == ''}>
