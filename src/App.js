@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 
 function App() {
   return (
-    <div className="App" style={{backgroundImage: "url(" + HomePhoto + ")"}}>
+    <div className="App" style={{backgroundImage: "url(" + HomePhoto + ")", position: 'absolute'}}>
       <head>
       </head>
       <Router>
