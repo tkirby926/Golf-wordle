@@ -39,6 +39,7 @@ export class SearchBarComponent extends React.Component {
             hint_requested: false,
             hint: '',
             hide_hint_confirmation: true,
+            is_loading: true
         }
     }
 
@@ -134,7 +135,7 @@ export class SearchBarComponent extends React.Component {
                            num_guesses: num_guesses, hide_rules_popup: rules_popup,
                            series: sessionStorage.getItem('series'), guesses: guesses_readable, 
                            cant_guess: cant_guess, history: history, hint_requested: hint_req,
-                           hint: hint});
+                           hint: hint, is_loading: false});
         }
         else {
             fetch(UserProfile.getUrl() + "/api/v1/check_user", { credentials: 'include', method: 'GET' })
@@ -157,6 +158,7 @@ export class SearchBarComponent extends React.Component {
                     hint_requested: data.hint != '' ? true : false,
                     hint: data.hint,
                     hide_rules_popup: data.user == "null" ? false : true,
+                    is_loading: false,
                     series: [{
                         name: 'series-1',
                         data: [data.history]
@@ -822,6 +824,9 @@ export class SearchBarComponent extends React.Component {
                         {this.returnLabel(4)}
                         {this.returnLabel(5)}
                     </table>
+                </div>
+                <div class="loading-spinner" hidden={!this.state.is_loading}>
+
                 </div>
                 <div>
                     {this.state.num_guesses > 7 && this.returnGuess(7, false)}
