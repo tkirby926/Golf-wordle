@@ -773,17 +773,19 @@ export class SearchBarComponent extends React.Component {
                 <div style={{clear: 'both'}}>
                     <img src={Scheffle} style={{height: '12vh', maxWidth: '85vw', marginBottom: '2vh', marginTop: '2vh', borderRadius: '5px'}}></img>
                 </div>
-                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6567831601079042"
-                    crossorigin="anonymous"></script>
-                <ins class="adsbygoogle"
-                    style="display:block"
-                    data-ad-client="ca-pub-6567831601079042"
-                    data-ad-slot="6139463594"
-                    data-ad-format="auto"
-                    data-full-width-responsive="true"></ins>
-                <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
+                <div>
+                    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6567831601079042"
+                        crossorigin="anonymous"></script>
+                    <ins class="adsbygoogle"
+                        style="display:block"
+                        data-ad-client="ca-pub-6567831601079042"
+                        data-ad-slot="6139463594"
+                        data-ad-format="auto"
+                        data-full-width-responsive="true"></ins>
+                    <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
                 <div class="box">
                     <div class="big_form_white" hidden={this.state.user == ''}>
                         <p style={{lineHeight: '1px'}}>{this.state.user}</p>
