@@ -747,12 +747,6 @@ export class SearchBarComponent extends React.Component {
         }
         return (
             <div style={{width: div_width, position: 'relative', paddingBottom: '50px'}}>
-                <head>
-                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6567831601079042"
-     crossorigin="anonymous"></script>
-                </head>
-                {/* <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6567831601079042"
-                crossorigin="anonymous"></script> */}
                 <div  style={{ marginRight: '5%', width: '100%', marginTop: '5px', marginBottom: '5px'}}>
                     <div style={{display: 'flex'}}>
                         <button class="button_standard" style={{display: this.state.user == '' ? 'none' : 'initial', fontSize: '15px', marginTop: '1vh', marginLeft: '10px', float: 'left', marginRight: '2px'}} onClick={(event) => this.showDropDown(event)}> Profile </button>
