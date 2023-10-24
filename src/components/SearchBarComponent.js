@@ -910,6 +910,19 @@ export class SearchBarComponent extends React.Component {
                         <p hidden={this.state.user != ''} style={{fontWeight: 'bold'}}>Please Log In or Create an Account <button onClick={(e) => this.logIn(e)} class="link_button">HERE</button> in order to keep track of your daily guess history and average score.</p>
                         </div>
                 </form>
+                <div>
+                    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6567831601079042"
+                        crossorigin="anonymous"></script>
+                    <ins class="adsbygoogle"
+                        style={{display:'block'}}
+                        data-ad-client="ca-pub-6567831601079042"
+                        data-ad-slot="6139463594"
+                        data-ad-format="auto"
+                        data-full-width-responsive="true"></ins>
+                    <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script> 
+                </div>
             </div>   
         )
     }
