@@ -825,7 +825,7 @@ export class SearchBarComponent extends React.Component {
                         {this.returnLabel(5)}
                     </table>
                 </div>
-                <div class="loading-spinner" hidden={!this.state.is_loading}>
+                <div class="loading-spinner" style={{margin: '0 auto', marginTop: '30px'}} hidden={!this.state.is_loading}>
 
                 </div>
                 <div>
