@@ -824,7 +824,7 @@ export class SearchBarComponent extends React.Component {
                 </div>
                 <div style={{marginTop: '15px', width: '100%'}}>
                     <div class="counter">
-                        <p style={{marginBottom: '0', marginTop: '0'}}>Guess {this.state.num_guesses} of 8</p>
+                        <p style={{marginBottom: '0', marginTop: '0'}}>Guess {this.state.num_guesses == 8 ? 8 : this.state.num_guesses + 1} of 8</p>
                     </div>
                 </div>
                 <div style={{width: '100%', maxWidth: '600px', margin: '0 auto'}}>
