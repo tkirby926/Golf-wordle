@@ -137,6 +137,10 @@
     font-family: 'Nexa', sans-serif;
     font-size: 14px;
     text-align: center;
+    font-weight: bold;
+    width: 15%;
+    min-width: 125px;
+    border-bottom: thick solid black;
 }
 
 .big_form_gray {
