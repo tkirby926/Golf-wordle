@@ -822,7 +822,12 @@ export class SearchBarComponent extends React.Component {
                     <p style={{marginBottom: '0'}}>Last Tournament Won:</p>
                     <p style={{marginTop: '0'}}>{this.state.hint}</p>
                 </div>
-                <div style={{width: '100%', maxWidth: '600px', margin: '0 auto', marginTop: '15px'}}>
+                <div style={{marginTop: '15px', width: '100%'}}>
+                    <div class="counter">
+                        <p>Guess {this.state.num_guesses} of 8</p>
+                    </div>
+                </div>
+                <div style={{width: '100%', maxWidth: '600px', margin: '0 auto'}}>
                     <table cellSpacing='5px' height='50px' style={{tableLayout: 'fixed', margin: '0 auto', backgroundColor: 'white', borderRadius: '25px', width: window.innerWidth < 450 ? '100%' : '95%'}}>
                         {this.returnLabel(0)}
                         {this.returnLabel(1)}
