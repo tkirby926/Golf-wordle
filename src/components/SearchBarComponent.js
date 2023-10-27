@@ -37,6 +37,7 @@ export class SearchBarComponent extends React.Component {
             friends: [],
             requests: [],
             hint_requested: false,
+            hide_just_chosen_golfer: true,
             hint: '',
             hide_hint_confirmation: true,
             is_loading: true
@@ -733,9 +734,14 @@ export class SearchBarComponent extends React.Component {
         this.setState({hide_rules_popup: !this.state.hide_rules_popup, hide_login_popup: true, hide_create_popup: true, hide_dropdown: true})
     }
 
-    clsoeHintConfirmation(e) {
+    closeHintConfirmation(e) {
         e.preventDefault();
         this.setState({hide_hint_confirmation: true})
+    }
+
+    showJustGolferPopup(e) {
+        e.preventDefault();
+        this.setState({hide_hint_confirmation: true, hide_login_popup: true, hide_losing_popup: true, hide_winning_popup: true, hide_create_popup: true, hide_just_chosen_golfer: false})
     }
 
     render() {
@@ -752,6 +758,7 @@ export class SearchBarComponent extends React.Component {
                         <button class="button_standard" style={{display: this.state.user == '' ? 'none' : 'initial', fontSize: '15px', marginTop: '1vh', marginLeft: '10px', float: 'left', marginRight: '2px'}} onClick={(event) => this.showDropDown(event)}> Profile </button>
                         <button class="button_standard" style={{fontSize: '15px', marginTop: '1vh', marginLeft: '10px', float: 'left'}} onClick={(event) => this.showRulesPopup(event)}> Rules </button>
                         <button class="button_standard" style={{display: this.state.user == '' ? 'none' : 'initial', fontSize: '15px', marginTop: '1vh', marginLeft: '10px', float: 'right', marginRight: '10px'}} onClick={(event) => this.showFriendsPopup(event)}> Friends </button>
+                        <button class="button_standard" style={{display: this.state.user == '' && this.state.cant_guess ? 'inital' : 'none', fontSize: '15px', marginTop: '1vh', marginLeft: '10px', float: 'right', marginRight: '10px'}} onClick={(event) => this.showJustGolferPopup(event)}> Today's Golfer </button>
                     </div>
                 </div>
                 <div class="big_form_drop" style={{position: 'absolute', clear: 'both', width: '95%', overflow: 'visible', zIndex: '10000'}} hidden={this.state.hide_dropdown}>
@@ -761,6 +768,11 @@ export class SearchBarComponent extends React.Component {
                     </div>
                     {this.showHistory()}
                 </div>
+                <div class="big_form_drop" style={{position: 'absolute', clear: 'both', width: '95%', overflow: 'visible', zIndex: '10000'}} hidden={this.state.hide_just_chosen_golfer}>
+                    <div style={{width: '95%', margin: '0 auto'}}>
+                        {this.state.answer.length > 0 && this.returnGuess(8, true)}
+                    </div>
+                </div>    
                 <div class="big_form_drop" style={{position: 'absolute', clear: 'both', width: '350px', maxWidth: '95%', overflow: 'visible', zIndex: '10000', right: '0'}} hidden={this.state.hide_friends_popup}>
                     {this.state.user != '' && this.showFriends()}
                 </div>
@@ -814,7 +826,7 @@ export class SearchBarComponent extends React.Component {
                     <div style={{width: '100%'}}>
                         <div style={{margin: '0 auto', display: 'inline-block'}}>
                             <button class="button_standard" style={{float: 'left'}} onClick={(e) => this.showHint(e)}>Yes</button>
-                            <button class="button_standard" style={{float: 'left', marginLeft: '10px'}} onClick={(e) => this.clsoeHintConfirmation(e)}>No</button>
+                            <button class="button_standard" style={{float: 'left', marginLeft: '10px'}} onClick={(e) => this.closeHintConfirmation(e)}>No</button>
                         </div>
                     </div>
                 </div>
