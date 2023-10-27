@@ -758,7 +758,7 @@ export class SearchBarComponent extends React.Component {
                         <button class="button_standard" style={{display: this.state.user == '' ? 'none' : 'initial', fontSize: '15px', marginTop: '1vh', marginLeft: '10px', float: 'left', marginRight: '2px'}} onClick={(event) => this.showDropDown(event)}> Profile </button>
                         <button class="button_standard" style={{fontSize: '15px', marginTop: '1vh', marginLeft: '10px', float: 'left'}} onClick={(event) => this.showRulesPopup(event)}> Rules </button>
                         <button class="button_standard" style={{display: this.state.user == '' ? 'none' : 'initial', fontSize: '15px', marginTop: '1vh', marginLeft: '10px', float: 'right', marginRight: '10px'}} onClick={(event) => this.showFriendsPopup(event)}> Friends </button>
-                        <button class="button_standard" style={{display: this.state.user == '' && this.state.cant_guess ? 'inital' : 'none', fontSize: '15px', marginTop: '1vh', marginLeft: '10px', float: 'right', marginRight: '10px'}} onClick={(event) => this.showJustGolferPopup(event)}> Today's Golfer </button>
+                        <button class="button_standard" style={{display: this.state.user == '' && this.state.cant_guess ? 'initial' : 'none', fontSize: '15px', marginTop: '1vh', marginLeft: '10px', float: 'right', marginRight: '10px'}} onClick={(event) => this.showJustGolferPopup(event)}> Today's Golfer </button>
                     </div>
                 </div>
                 <div class="big_form_drop" style={{position: 'absolute', clear: 'both', width: '95%', overflow: 'visible', zIndex: '10000'}} hidden={this.state.hide_dropdown}>
