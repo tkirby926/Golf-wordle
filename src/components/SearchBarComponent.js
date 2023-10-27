@@ -768,7 +768,7 @@ export class SearchBarComponent extends React.Component {
                     </div>
                     {this.showHistory()}
                 </div>
-                <div class="big_form_drop" style={{position: 'absolute', clear: 'both', width: '95%', overflow: 'visible', zIndex: '10000'}} hidden={this.state.hide_just_chosen_golfer}>
+                <div class="big_form_drop" style={{position: 'absolute', clear: 'both', width: '65%', minWidth: '350px', overflow: 'visible', zIndex: '10000', right: '0'}} hidden={this.state.hide_just_chosen_golfer}>
                     <div style={{width: '95%', margin: '0 auto'}}>
                         {this.state.answer.length > 0 && this.returnGuess(8, true)}
                     </div>
