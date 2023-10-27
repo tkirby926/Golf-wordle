@@ -741,7 +741,7 @@ export class SearchBarComponent extends React.Component {
 
     showJustGolferPopup(e) {
         e.preventDefault();
-        this.setState({hide_hint_confirmation: true, hide_login_popup: true, hide_losing_popup: true, hide_winning_popup: true, hide_create_popup: true, hide_just_chosen_golfer: false})
+        this.setState({hide_hint_confirmation: true, hide_login_popup: true, hide_losing_popup: true, hide_winning_popup: true, hide_create_popup: true, hide_just_chosen_golfer: !this.state.hide_just_chosen_golfer})
     }
 
     render() {
