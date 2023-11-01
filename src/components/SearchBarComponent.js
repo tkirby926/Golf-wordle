@@ -803,7 +803,7 @@ export class SearchBarComponent extends React.Component {
                         onClick={(e) => this.logIn(e)}>Log in</p>
                     </div>  
                     <form name="search">
-                        <input disabled={this.state.num_guesses >= 8} type="text" style={{caretColor: 'transparent'}} disabled={this.state.cant_guess}  placeholder={this.state.cant_guess ? "Thanks for Playing" : "Guess Here"} id='search' class="input" name="txt" onKeyUp={(e) => this.autoComp(e)} />
+                        <input disabled={this.state.num_guesses >= 8} type="text" style={{caretColor: 'transparent'}} disabled={this.state.cant_guess}  placeholder={this.state.cant_guess ? "Thanks for Playing" : "Guess Here"} id='search' autocomplete="off" class="input" name="txt" onKeyUp={(e) => this.autoComp(e)} />
                         <div style={{position: 'absolute', width: '100%'}}>{this.state.autocomp_results.slice(0, 5).map((result, index) => {
                                 return (
                                 <tr class="user_button" onClick = {(e) => this.acceptGuess(e, result[0])}>
