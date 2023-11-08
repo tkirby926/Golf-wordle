@@ -1,7 +1,9 @@
+import React from 'react';
+import UserProfile from './Userprofile';
+
 export class AdminComponent extends React.Component {
 
     componentDidMount() {
-        e.preventDefault();
         fetch(UserProfile.getUrl() + '/checkadmin', { credentials: 'include', method: 'GET' })
         .then(response => response.json())
         .then((data) => {
