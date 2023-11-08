@@ -34,7 +34,7 @@ export class AdminComponent extends React.Component {
                 window.location.assign('/adminlogin')
             }
             else {
-                this.setState({users: data.users})
+                this.setState({users: data.users, page: page})
             }
         });
     }
