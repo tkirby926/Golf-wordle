@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HomeComponent } from './components/HomeComponent';
 import HomePhoto from './components/golfle1.jpeg';
 import React, { useState } from 'react';
+import { AdminLoginComponent } from './components/adminlogin';
+import{ AdminComponent } from './components/admin';
 
 function App() {
   return (
@@ -13,6 +15,8 @@ function App() {
       <Router>
         <Routes>
           <Route path='/' element={<HomeComponent/>} />
+          <Route path='/log_adm' element={<AdminLoginComponent/>} />
+          <Route path='/adm' element={<AdminComponent/>} />
         </Routes>
       </Router>
     </div>
