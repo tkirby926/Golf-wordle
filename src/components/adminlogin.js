@@ -1,5 +1,6 @@
 import React from 'react';
 import './css/HomeComponent.css';
+import UserProfile from './Userprofile';
 
 export class AdminLoginComponent extends React.Component {
 
