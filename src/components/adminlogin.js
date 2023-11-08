@@ -19,7 +19,9 @@ export class AdminLoginComponent extends React.Component {
     }
 
     constructor(props) {
-        this.state = {}
+        this.state = {
+            error: ''
+        }
     }
 
     render() {
