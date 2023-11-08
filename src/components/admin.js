@@ -17,6 +17,7 @@ export class AdminComponent extends React.Component {
     }
 
     constructor(props) {
+        super(props);
         this.state = {
             users: [],
             user_count: 0,
