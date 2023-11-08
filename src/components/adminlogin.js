@@ -9,7 +9,7 @@ export class AdminLoginComponent extends React.Component {
         fetch(UserProfile.getUrl() + '/adminlogin/' + e.target[0].value + '/' + e.target[1].value, { credentials: 'include', method: 'GET' })
         .then(response => response.json())
         .then((data) => {
-            if (data.correct_login) {
+            if (data.login == "success") {
                 window.location.assign('/admin')
             }
             else {
