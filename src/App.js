@@ -16,7 +16,7 @@ function App() {
         <Routes>
           <Route path='/' element={<HomeComponent/>} />
           <Route path='/log_adm' element={<AdminLoginComponent/>} />
-          <Route path='/adm' element={<AdminComponent/>} />
+          <Route path='/admin' element={<AdminComponent/>} />
         </Routes>
       </Router>
     </div>
