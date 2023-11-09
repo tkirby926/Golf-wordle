@@ -51,8 +51,8 @@ export class AdminComponent extends React.Component {
                     </div>
                 )
             })}
-            <button disabled={this.state.users.length != 30} onClick={(e) => this.changePage(e, true)}>Next Page</button>
             <button disabled={this.state.page == 0} onClick={(e) => this.changePage(e, false)}>Last Page</button>
+            <button disabled={this.state.users.length != 30} onClick={(e) => this.changePage(e, true)}>Next Page</button>
         </div>
         )
     }
