@@ -41,8 +41,9 @@ export class AdminComponent extends React.Component {
 
     render() {
         return (
-        <div>
-            <p>{this.state.user_count}</p><br></br>
+        <div class="big_form_white">
+            <p>User Count: {this.state.user_count}</p><br></br>
+            <p>Users:</p>
             {this.state.users.map((user, index) => {
                 return (
                     <div>
