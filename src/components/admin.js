@@ -8,7 +8,7 @@ export class AdminComponent extends React.Component {
         .then(response => response.json())
         .then((data) => {
             if (data.auth == 'failed') {
-                window.location.assign('/adminlogin')
+                window.location.assign('/log_adm')
             }
             else {
                 this.setState({users: data.users, user_count: data.user_count})
@@ -31,7 +31,7 @@ export class AdminComponent extends React.Component {
         .then(response => response.json())
         .then((data) => {
             if (data.auth == 'failed') {
-                window.location.assign('/adminlogin')
+                window.location.assign('/log_adm')
             }
             else {
                 this.setState({users: data.users, page: page})
