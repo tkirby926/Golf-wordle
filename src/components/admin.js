@@ -52,7 +52,7 @@ export class AdminComponent extends React.Component {
 
     render() {
         return (
-        <div class="big_form_white">
+        <div class="big_form_white" style={{display: 'inline-block'}}>
             <p>User Count: {this.state.user_count}</p><br></br>
             <p>Users:</p>
             <div style={{float: 'left'}}>
