@@ -31,7 +31,7 @@ export class SearchBarComponent extends React.Component {
             history: [],
             history_labels: ['1', '2', '3', '4', '5', '6', '7', '8'],
             hide_dropdown: true,
-            labels: ["Wins", "Majors", "World Rank", "Age", "Avg. Drive", "Origin"],
+            labels: ["Wins", "Major Win", "World Rank", "Age", "Avg. Drive", "Origin"],
             hide_rules_popup: true,
             search_status: 'r',
             friends: [],
@@ -249,6 +249,20 @@ export class SearchBarComponent extends React.Component {
                                     if (this.state.guesses[index][5] % 10 == 1) {
                                         suffix = 'st';
                                     }
+                                }
+                            }
+                            else if (index == 1) {
+                                if (this.state.guesses[index][index1 + 10] != 's') {
+                                    type = "first2";
+                                }
+                                else {
+                                    type = "first2_cor";
+                                }
+                                if (this.state.guesses[index][4] > 0) {
+                                    attr = "Yes"
+                                }
+                                else {
+                                    attr = "No"
                                 }
                             }
                             else {
