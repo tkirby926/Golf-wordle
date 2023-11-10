@@ -73,7 +73,7 @@ export class SearchBarComponent extends React.Component {
     checkDate() {
         var today = new Date();
         today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
-        today.setHours(today.getHours() - 5);
+        today.setHours(today.getHours() + 5);
         if (sessionStorage.getItem('last_update') == undefined) {
             return false;
         }
@@ -153,6 +153,7 @@ export class SearchBarComponent extends React.Component {
                 }
                 var today = new Date();
                 today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
+                today.setHours(today.getHours() + 5);
                 this.setState({cant_guess: cant_guess, guesses: data.guesses, history: data.history, 
                     user: data.user == "null" ? '' : data.user, 
                     answer: cant_guess ? data.chosenplayer : [],
