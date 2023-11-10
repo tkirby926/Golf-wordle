@@ -251,7 +251,7 @@ export class SearchBarComponent extends React.Component {
                                     }
                                 }
                             }
-                            else if (index == 1) {
+                            else if (index1 == 1) {
                                 if (this.state.guesses[index][index1 + 10] != 's') {
                                     type = "first2";
                                 }
