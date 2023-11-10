@@ -11,7 +11,7 @@ export class AdminComponent extends React.Component {
                 window.location.assign('/log_adm')
             }
             else {
-                this.setState({users_signed: data.users_profiles, users_not: data.other_users, user_count: data.user_count})
+                this.setState({users_signed: data.user_profiles, users_not: data.other_users, user_count: data.user_count})
             }
         });   
     }
