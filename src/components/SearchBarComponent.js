@@ -71,7 +71,8 @@ export class SearchBarComponent extends React.Component {
     }
 
     checkDate() {
-        var today = new Date();
+        var today = new Date(Date.UTC);
+        today.setHours(utcDate.getHours() - 5);
         if (sessionStorage.getItem('last_update') == undefined) {
             return false;
         }
@@ -149,7 +150,8 @@ export class SearchBarComponent extends React.Component {
                 if (data.no_guesses) {
                     cant_guess = true;
                 }
-
+                var today = new Date(Date.UTC);
+                today.setHours(utcDate.getHours() - 5);
                 this.setState({cant_guess: cant_guess, guesses: data.guesses, history: data.history, 
                     user: data.user == "null" ? '' : data.user, 
                     answer: cant_guess ? data.chosenplayer : [],
@@ -164,7 +166,7 @@ export class SearchBarComponent extends React.Component {
                         name: 'series-1',
                         data: [data.history]
                     }],
-                    last_check_timestamp: new Date()
+                    last_check_timestamp: today
                 })
                 sessionStorage.setItem('cant_guess', cant_guess)
                 sessionStorage.setItem('guesses', data.guesses)
@@ -175,7 +177,6 @@ export class SearchBarComponent extends React.Component {
                 sessionStorage.setItem('requests', data.requests)
                 sessionStorage.setItem('num_guesses', data.guesses.length)
                 sessionStorage.setItem('hide_rules_popup', data.user == "null" ? false : true)
-                var today = new Date();
                 sessionStorage.setItem('last_update', today);
                 sessionStorage.setItem('hint_requested', data.hint != '' ? true : false);
                 sessionStorage.setItem('hint', data.hint);
