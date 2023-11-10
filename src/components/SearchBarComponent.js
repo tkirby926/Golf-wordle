@@ -359,7 +359,7 @@ export class SearchBarComponent extends React.Component {
 
     logIn(e) {
         e.preventDefault();
-        this.setState({hide_login_popup: false, hide_create_popup: true, hide_rules_popup: true, hide_winning_popup: true, error: ''})
+        this.setState({hide_login_popup: false, hide_create_popup: true, hide_rules_popup: true, hide_winning_popup: true, error: '', hide_friends_popup: true})
     }
 
     closeLoginPopup(e) {
@@ -731,7 +731,7 @@ export class SearchBarComponent extends React.Component {
 
     showRulesPopup(e) {
         e.preventDefault();
-        this.setState({hide_rules_popup: !this.state.hide_rules_popup, hide_login_popup: true, hide_create_popup: true, hide_dropdown: true})
+        this.setState({hide_rules_popup: !this.state.hide_rules_popup, hide_login_popup: true, hide_create_popup: true, hide_dropdown: true, hide_friends_popup: true})
     }
 
     closeHintConfirmation(e) {
