@@ -71,7 +71,7 @@ export class SearchBarComponent extends React.Component {
     }
 
     checkDate() {
-        var today = new Date(Date.UTC);
+        var today = new Date(Date.UTC());
         today.setHours(today.getHours() - 5);
         if (sessionStorage.getItem('last_update') == undefined) {
             return false;
@@ -150,7 +150,7 @@ export class SearchBarComponent extends React.Component {
                 if (data.no_guesses) {
                     cant_guess = true;
                 }
-                var today = new Date(Date.UTC);
+                var today = new Date(Date.UTC());
                 today.setHours(today.getHours() - 5);
                 this.setState({cant_guess: cant_guess, guesses: data.guesses, history: data.history, 
                     user: data.user == "null" ? '' : data.user, 
