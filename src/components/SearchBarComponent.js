@@ -351,7 +351,7 @@ export class SearchBarComponent extends React.Component {
                     this.state.history[num_guess - 1]++;
                     sessionStorage.setItem('history', this.state.history);
                 }
-                this.setState({autocomp_results: [], num_guesses: num_guess, guesses: x, cant_guess: true, answer: data.guess_data.slice(0, 9), hide_winning_popup: false})
+                this.setState({autocomp_results: [], num_guesses: num_guess, guesses: x, cant_guess: true, answer: data.guess_data.slice(0, 9), hide_winning_popup: false, hide_dropdown: true, hide_login_popup: true, hide_create_popup: true, hide_winning_popup: true, hide_rules_popup: true})
                 sessionStorage.setItem('guesses', x);
                 sessionStorage.setItem('num_guesses', num_guess);
                 sessionStorage.setItem('cant_guess', true);
@@ -366,7 +366,7 @@ export class SearchBarComponent extends React.Component {
                         this.state.history[this.state.history.length - 1]++;
                         sessionStorage.setItem('history', this.state.history);
                     }
-                    this.setState({cant_guess: true, answer: data.chosen_player, hide_losing_popup: false, hide_winning_popup: true})
+                    this.setState({cant_guess: true, answer: data.chosen_player, hide_losing_popup: false, hide_winning_popup: true, hide_dropdown: true, hide_login_popup: true, hide_create_popup: true, hide_winning_popup: true, hide_rules_popup: true})
                     sessionStorage.setItem('cant_guess', true);
                     sessionStorage.setItem('answer', data.chosen_player);
                 }
